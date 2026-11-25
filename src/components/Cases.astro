@@ -1,0 +1,177 @@
+---
+import Icon from './Icon.astro';
+import { cases } from '../data/site';
+---
+
+<section class="cases section" id="cases">
+  <div class="shell">
+    <div class="cases__head">
+      <div>
+        <span class="eyebrow">Recent work</span>
+        <h2 class="cases__title">Matters we have <span class="accent">seen through.</span></h2>
+      </div>
+      <p class="lede cases__lede">
+        A selection across practice areas. Client names are withheld as a matter of course.
+      </p>
+    </div>
+
+    <ul class="rows">
+      <li class="rows__header" aria-hidden="true">
+        <span>Matter</span>
+        <span>Category</span>
+        <span>Closed</span>
+        <span></span>
+      </li>
+      {
+        cases.map((item) => (
+          <li class="row">
+            <h3 class="row__title">{item.title}</h3>
+            <div class="row__meta">
+              <span class="row__cat">{item.category}</span>
+              <span class="row__date">{item.date}</span>
+            </div>
+            <span class="row__go" aria-hidden="true">
+              <Icon name="arrow-up-right" size={15} />
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cases__head {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .cases__title {
+    margin-top: 0.85rem;
+    font-size: var(--fs-h2);
+  }
+
+  .cases__lede {
+    max-width: 40ch;
+  }
+
+  .rows {
+    margin: clamp(2rem, 1.4rem + 2.4vw, 3rem) 0 0;
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  /* Narrow: the title takes its own row, with category, date and the arrow
+     on a second row. Wide: the wrapper dissolves into the four-column grid. */
+  .rows__header,
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.7rem 1rem;
+    align-items: center;
+    padding: 1.15rem 1rem;
+    border-bottom: 1px solid var(--c-hairline);
+  }
+
+  .row__title {
+    grid-column: 1 / -1;
+  }
+
+  .row__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.9rem;
+    min-width: 0;
+  }
+
+  .row__go {
+    justify-self: end;
+  }
+
+  .rows__header {
+    display: none;
+    padding-block: 0.8rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .row {
+    border-radius: var(--r-tile);
+    transition: background-color 0.25s var(--ease);
+  }
+
+  .row:hover {
+    background: var(--c-card);
+  }
+
+  .row__title {
+    font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.3rem);
+    font-weight: 700;
+  }
+
+  .row__cat {
+    justify-self: start;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--r-chip);
+    background: var(--c-sand);
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-ink-soft);
+  }
+
+  .row__date {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row__go {
+    display: grid;
+    place-items: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    border: 1px solid var(--c-hairline);
+    color: var(--c-ink);
+    transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+
+  .row:hover .row__go {
+    background: var(--c-fir);
+    border-color: transparent;
+    color: var(--c-lime);
+    transform: rotate(45deg);
+  }
+
+  @media (min-width: 900px) {
+    .cases__head {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 3rem;
+    }
+
+    .rows__header,
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.2fr) minmax(0, 0.7fr) auto;
+      gap: 1.5rem;
+    }
+
+    .row__title {
+      grid-column: auto;
+    }
+
+    .row__meta {
+      display: contents;
+    }
+  }
+</style>

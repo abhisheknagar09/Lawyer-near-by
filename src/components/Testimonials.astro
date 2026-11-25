@@ -1,0 +1,126 @@
+---
+import Icon from './Icon.astro';
+import { testimonials } from '../data/site';
+---
+
+<section class="quotes section" id="testimonials">
+  <div class="shell">
+    <div class="quotes__head">
+      <span class="eyebrow">Client voices</span>
+      <h2 class="quotes__title">Outcomes people can <span class="accent">talk about.</span></h2>
+    </div>
+
+    <ul class="quotes__list">
+      {
+        testimonials.map((item) => (
+          <li class="quote">
+            <div class="quote__stars" aria-label="Rated 5 out of 5">
+              {Array.from({ length: 5 }).map(() => (
+                <Icon name="star" size={14} />
+              ))}
+            </div>
+            <blockquote class="quote__text">{item.quote}</blockquote>
+            <div class="quote__by">
+              <span class="quote__avatar" aria-hidden="true">
+                {item.name.charAt(0)}
+              </span>
+              <div>
+                <strong class="quote__name">{item.name}</strong>
+                <span class="quote__role">{item.role}</span>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .quotes__head {
+    max-width: 38rem;
+  }
+
+  .quotes__title {
+    margin-top: 0.85rem;
+    font-size: var(--fs-h2);
+  }
+
+  .quotes__list {
+    display: grid;
+    gap: 1rem;
+    margin: clamp(2rem, 1.4rem + 2.4vw, 3rem) 0 0;
+  }
+
+  .quote {
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    border-radius: var(--r-card);
+    background: var(--c-card);
+    border: 1px solid var(--c-hairline);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+
+  .quote:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .quote__stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--c-fir);
+  }
+
+  .quote__stars :global(svg) {
+    fill: currentColor;
+  }
+
+  .quote__text {
+    margin: 1rem 0 1.75rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--c-ink);
+  }
+
+  .quote__by {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  .quote__avatar {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--c-fir);
+    color: var(--c-lime);
+    font-family: var(--font-display);
+    font-weight: 800;
+  }
+
+  .quote__name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 700;
+  }
+
+  .quote__role {
+    font-size: var(--fs-micro);
+    color: var(--c-ink-faint);
+  }
+
+  @media (min-width: 760px) {
+    .quotes__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,230 @@
+---
+import '../styles/global.css';
+import '../styles/motion.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** slug of the variation that is currently open */
+  current: 'reveal' | 'spotlight' | 'kinetic';
+  /** dark variations get a dark page ground behind the layout */
+  ground?: string;
+}
+
+const {
+  title,
+  description = 'A motion study for the Lawyer Near By homepage.',
+  current,
+  ground,
+} = Astro.props;
+
+const variations = [
+  { slug: 'reveal', label: '01 · Reveal' },
+  { slug: 'spotlight', label: '02 · Spotlight' },
+  { slug: 'kinetic', label: '03 · Kinetic' },
+] as const;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0e3b2e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    <script is:inline>
+      // Set before first paint so animated elements never flash in visible,
+      // and never hide at all when the viewer asks for reduced motion.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('has-motion');
+      }
+    </script>
+  </head>
+
+  <body style={ground ? `background:${ground}` : undefined}>
+    <a href="#main" class="skip">Skip to content</a>
+
+    <nav class="bar" aria-label="Variations">
+      <div class="bar__in">
+        <a class="bar__home" href="/">
+          <span aria-hidden="true">&larr;</span> Live homepage
+        </a>
+        <ul class="bar__list">
+          {
+            variations.map((v) => (
+              <li>
+                <a
+                  class:list={['bar__link', { 'is-on': v.slug === current }]}
+                  href={`/variations/${v.slug}/`}
+                  aria-current={v.slug === current ? 'page' : undefined}
+                >
+                  {v.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </nav>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <script>
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!reduced && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+
+        document.querySelectorAll('[data-reveal], .line').forEach((el) => io.observe(el));
+      } else {
+        document.querySelectorAll('[data-reveal], .line').forEach((el) => el.classList.add('is-in'));
+      }
+
+      // --- number counters -------------------------------------------------
+      const tallies = document.querySelectorAll<HTMLElement>('[data-tally]');
+
+      if (tallies.length) {
+        const run = (el: HTMLElement) => {
+          const target = Number(el.dataset.tally || '0');
+          const suffix = el.dataset.suffix || '';
+          const dur = 1100;
+          const start = performance.now();
+
+          const tick = (now: number) => {
+            const p = Math.min((now - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const value = Math.round(target * eased);
+            el.textContent = value.toLocaleString('en-IN') + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+          };
+
+          requestAnimationFrame(tick);
+        };
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          tallies.forEach((el) => {
+            el.textContent =
+              Number(el.dataset.tally || '0').toLocaleString('en-IN') + (el.dataset.suffix || '');
+          });
+        } else {
+          const io2 = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                run(entry.target as HTMLElement);
+                io2.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.5 },
+          );
+          tallies.forEach((el) => io2.observe(el));
+        }
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -120%);
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    background: var(--c-fir);
+    color: var(--c-on-fir);
+    border-radius: 0 0 12px 12px;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    transition: transform 0.2s var(--ease);
+  }
+
+  .skip:focus-visible {
+    transform: translate(-50%, 0);
+  }
+
+  /* --- variation switcher --- */
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(9, 39, 30, 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(236, 229, 215, 0.14);
+  }
+
+  .bar__in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 0.6rem var(--gutter);
+  }
+
+  .bar__home {
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(236, 229, 215, 0.7);
+  }
+
+  .bar__home:hover {
+    color: var(--c-lime);
+  }
+
+  .bar__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0;
+  }
+
+  .bar__link {
+    display: block;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--r-chip);
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: rgba(236, 229, 215, 0.7);
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .bar__link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .bar__link.is-on {
+    background: var(--c-lime);
+    color: var(--c-fir-deep);
+  }
+</style>

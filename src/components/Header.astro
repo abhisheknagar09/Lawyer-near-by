@@ -1,0 +1,253 @@
+---
+import Icon from './Icon.astro';
+import { nav, site } from '../data/site';
+---
+
+<header class="hdr">
+  <div class="shell hdr__in">
+    <a class="brand" href="#top" aria-label={`${site.name} — home`}>
+      <span class="brand__mark" aria-hidden="true">
+        <Icon name="scale" size={17} />
+      </span>
+      <span class="brand__text">Lawyer Near By</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        {
+          nav.map((item) => (
+            <li>
+              <a class="nav__link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hdr__end">
+      <a class="btn btn--fir hdr__cta" href="#contact">
+        Book a call
+        <span class="btn__arrow" aria-hidden="true"><Icon name="arrow-up-right" size={13} /></span>
+      </a>
+
+      <button
+        class="burger"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-burger
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="sheet" id="mobile-nav" data-sheet hidden>
+      <ul class="sheet__list">
+        {
+          nav.map((item) => (
+            <li>
+              <a class="sheet__link" href={item.href} data-sheet-link>
+                {item.label}
+                <Icon name="arrow-up-right" size={16} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn btn--fir sheet__cta" href="#contact" data-sheet-link>
+        Book a call
+        <span class="btn__arrow" aria-hidden="true"><Icon name="arrow-up-right" size={13} /></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const sheet = document.querySelector<HTMLElement>('[data-sheet]');
+
+  if (burger && sheet) {
+    const setOpen = (open: boolean) => {
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      burger.classList.toggle('is-open', open);
+      sheet.hidden = !open;
+    };
+
+    burger.addEventListener('click', () => {
+      setOpen(burger.getAttribute('aria-expanded') !== 'true');
+    });
+
+    sheet.querySelectorAll('[data-sheet-link]').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
+  }
+</script>
+
+<style>
+  .hdr {
+    background: var(--c-page);
+  }
+
+  .hdr__in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.15rem;
+  }
+
+  /* --- brand --- */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex: none;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.035em;
+  }
+
+  .brand__mark {
+    display: grid;
+    place-items: center;
+    width: 2.05rem;
+    height: 2.05rem;
+    border-radius: 12px;
+    background: var(--c-fir);
+    color: var(--c-lime);
+  }
+
+  /* --- desktop nav --- */
+  .nav {
+    display: none;
+    padding: 0.3rem;
+    border-radius: var(--r-chip);
+    background: rgba(14, 59, 46, 0.06);
+  }
+
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0;
+  }
+
+  .nav__link {
+    display: block;
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--r-chip);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    color: var(--c-ink-soft);
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .nav__link:hover {
+    background: var(--c-card);
+    color: var(--c-fir);
+  }
+
+  .hdr__end {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
+  }
+
+  .hdr__cta {
+    display: none;
+  }
+
+  /* --- burger --- */
+  .burger {
+    display: grid;
+    gap: 5px;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0.8rem 0.7rem;
+    align-content: center;
+    border-radius: 14px;
+    background: rgba(14, 59, 46, 0.07);
+  }
+
+  .burger span {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--c-fir);
+    transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
+  }
+
+  .burger.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .burger.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burger.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* --- mobile sheet --- */
+  .sheet {
+    margin-bottom: 1rem;
+    padding: 0.9rem;
+    border-radius: var(--r-card);
+    background: var(--c-card);
+    border: 1px solid var(--c-hairline);
+  }
+
+  .sheet__list {
+    display: grid;
+    gap: 0.1rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .sheet__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  .sheet__link:hover {
+    background: var(--c-sand);
+  }
+
+  .sheet__link :global(svg) {
+    color: var(--c-fir);
+  }
+
+  .sheet__cta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  @media (min-width: 900px) {
+    .nav,
+    .hdr__cta {
+      display: flex;
+    }
+
+    .burger,
+    .sheet {
+      display: none;
+    }
+  }
+</style>

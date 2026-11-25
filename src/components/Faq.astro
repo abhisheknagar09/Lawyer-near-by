@@ -1,0 +1,134 @@
+---
+import Icon from './Icon.astro';
+import { faqs } from '../data/site';
+---
+
+<section class="faq section" id="faqs">
+  <div class="shell">
+    <div class="faq__grid">
+      <div class="faq__head">
+        <span class="eyebrow">FAQs</span>
+        <h2 class="faq__title">Questions worth <span class="accent">asking first.</span></h2>
+        <p class="lede faq__lede">
+          If something here is not covered, ask it in your consultation — that is what the time is
+          for.
+        </p>
+      </div>
+
+      <ul class="faq__list">
+        {
+          faqs.map((item, index) => (
+            <li>
+              <details class="qa" name="faq" open={index === 0}>
+                <summary class="qa__q">
+                  <span>{item.q}</span>
+                  <span class="qa__mark" aria-hidden="true">
+                    <Icon name="plus" size={16} class="qa__plus" />
+                    <Icon name="minus" size={16} class="qa__minus" />
+                  </span>
+                </summary>
+                <p class="qa__a">{item.a}</p>
+              </details>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__grid {
+    display: grid;
+    gap: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+    align-items: start;
+  }
+
+  .faq__title {
+    margin-top: 0.85rem;
+    font-size: var(--fs-h2);
+  }
+
+  .faq__lede {
+    margin-top: 0.9rem;
+    max-width: 28ch;
+  }
+
+  .faq__list {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0;
+  }
+
+  .qa {
+    border-radius: var(--r-card);
+    background: var(--c-card);
+    border: 1px solid var(--c-hairline);
+    transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+
+  .qa[open] {
+    border-color: rgba(14, 59, 46, 0.3);
+    box-shadow: var(--shadow-card);
+  }
+
+  .qa__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.3rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .qa__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .qa__mark {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--c-sand);
+    color: var(--c-fir);
+  }
+
+  .qa[open] .qa__mark {
+    background: var(--c-fir);
+    color: var(--c-lime);
+  }
+
+  .qa__mark :global(svg) {
+    grid-area: 1 / 1;
+  }
+
+  .qa__mark :global(.qa__minus),
+  .qa[open] .qa__mark :global(.qa__plus) {
+    display: none;
+  }
+
+  .qa[open] .qa__mark :global(.qa__minus) {
+    display: block;
+  }
+
+  .qa__a {
+    padding: 0 1.3rem 1.3rem;
+    font-size: var(--fs-small);
+    line-height: 1.7;
+    color: var(--c-ink-soft);
+  }
+
+  @media (min-width: 900px) {
+    .faq__grid {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+</style>

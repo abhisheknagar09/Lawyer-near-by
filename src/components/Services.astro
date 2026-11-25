@@ -1,0 +1,154 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../data/site';
+
+/** The first practice area runs wide and in deep green; the rest are white tiles. */
+const [lead, ...rest] = services;
+---
+
+<section class="services section" id="services">
+  <div class="shell">
+    <span class="eyebrow">Practice areas</span>
+    <h2 class="services__title">Five kinds of trouble, <span class="accent">handled properly.</span></h2>
+    <p class="lede services__lede">
+      Each matter stays with one advocate from the first call to the last hearing — no files passed
+      around, no retelling your story.
+    </p>
+
+    <ul class="bento">
+      <li class="tile tile--lead">
+        <span class="tile__icon" aria-hidden="true">
+          <Icon name={lead.icon as any} size={20} />
+        </span>
+        <h3 class="tile__title">{lead.title}</h3>
+        <p class="tile__body">{lead.body}</p>
+        <a class="tile__link" href="#consultation">
+          Ask about this
+          <Icon name="arrow-up-right" size={14} />
+        </a>
+      </li>
+
+      {
+        rest.map((service) => (
+          <li class="tile">
+            <span class="tile__icon" aria-hidden="true">
+              <Icon name={service.icon as any} size={20} />
+            </span>
+            <h3 class="tile__title">{service.title}</h3>
+            <p class="tile__body">{service.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services__title {
+    margin-top: 0.85rem;
+    font-size: var(--fs-h2);
+  }
+
+  .services__lede {
+    margin-top: 0.9rem;
+    max-width: 52ch;
+  }
+
+  .bento {
+    display: grid;
+    gap: 1rem;
+    margin: clamp(2rem, 1.4rem + 2.4vw, 2.75rem) 0 0;
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: var(--r-card);
+    background: var(--c-card);
+    border: 1px solid var(--c-hairline);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .tile:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .tile__icon {
+    display: grid;
+    place-items: center;
+    width: 2.7rem;
+    height: 2.7rem;
+    border-radius: 14px;
+    background: var(--c-sand);
+    color: var(--c-fir);
+  }
+
+  .tile__title {
+    margin-top: 1.1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .tile__body {
+    margin-top: 0.45rem;
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  /* --- lead tile --- */
+  .tile--lead {
+    background: var(--c-fir);
+    border-color: transparent;
+    color: var(--c-on-fir);
+  }
+
+  .tile--lead .tile__icon {
+    background: var(--c-lime-wash);
+    color: var(--c-lime);
+  }
+
+  .tile--lead .tile__body {
+    color: var(--c-on-fir-soft);
+  }
+
+  .tile__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--c-lime);
+  }
+
+  .tile__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Five tiles in two columns leaves an orphan, so the lead tile takes the
+     full row at both the two- and three-column breakpoints. */
+  @media (min-width: 620px) {
+    .bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tile--lead {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .bento {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tile--lead {
+      grid-column: span 2;
+    }
+  }
+</style>

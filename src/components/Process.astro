@@ -1,0 +1,130 @@
+---
+import { process } from '../data/site';
+---
+
+<section class="process section" id="process">
+  <div class="shell">
+    <div class="panel process__panel">
+      <div class="process__head">
+        <span class="eyebrow eyebrow--on-fir">How it works</span>
+        <h2 class="process__title">Four steps, <span class="lime">no guesswork.</span></h2>
+        <p class="lede lede--on-fir process__lede">
+          From the first message to the advice you act on — this is the whole route.
+        </p>
+      </div>
+
+      <ol class="steps">
+        {
+          process.map((item) => (
+            <li class="step">
+              <div class="step__rail">
+                <span class="step__num">{item.step}</span>
+              </div>
+              <h3 class="step__title">{item.title}</h3>
+              <p class="step__body">{item.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process__panel {
+    padding: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem);
+  }
+
+  .process__head {
+    max-width: 44rem;
+  }
+
+  .process__title {
+    margin-top: 0.85rem;
+    font-size: var(--fs-h2);
+    color: #ffffff;
+  }
+
+  .lime {
+    color: var(--c-lime);
+  }
+
+  .process__lede {
+    margin-top: 0.9rem;
+  }
+
+  .steps {
+    display: grid;
+    gap: 2rem 1.25rem;
+    margin: clamp(2.25rem, 1.6rem + 2.6vw, 3.25rem) 0 0;
+  }
+
+  /* The sequence is carried by the numbered badges and the rule that runs
+     between them, not by card outlines — on this green a card surface light
+     enough to read competes with the content inside it. */
+  .step__rail {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .step__num {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--c-lime);
+    color: var(--c-fir-deep);
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .step__body {
+    margin-top: 0.5rem;
+    font-size: var(--fs-small);
+    color: var(--c-on-fir-soft);
+    line-height: 1.65;
+  }
+
+  @media (min-width: 620px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* bridge the column gap so the rule reads as one line across all four */
+    .step__rail::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      margin-right: -1.25rem;
+      background: linear-gradient(
+        90deg,
+        rgba(199, 240, 95, 0.4),
+        rgba(199, 240, 95, 0.18)
+      );
+    }
+
+    .step:last-child .step__rail::after {
+      display: none;
+    }
+  }
+</style>

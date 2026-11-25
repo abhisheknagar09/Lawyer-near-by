@@ -1,0 +1,150 @@
+/* ============================================================
+   Motion layer — used by the pages under /variations.
+   Nothing here is required to read the page: every animated
+   element is fully visible when JavaScript does not run and
+   when the viewer asks for reduced motion.
+   ============================================================ */
+
+/* `has-motion` is set by an inline head script, so there is no
+   flash of visible content before the first paint. */
+.has-motion [data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease),
+    clip-path 0.8s var(--ease);
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform;
+}
+
+.has-motion [data-reveal='up'] {
+  transform: translateY(22px);
+}
+
+.has-motion [data-reveal='left'] {
+  transform: translateX(-26px);
+}
+
+.has-motion [data-reveal='right'] {
+  transform: translateX(26px);
+}
+
+.has-motion [data-reveal='scale'] {
+  transform: scale(0.94);
+}
+
+.has-motion [data-reveal='mask'] {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(0.18em);
+}
+
+.has-motion [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 -0.15em 0);
+  will-change: auto;
+}
+
+/* --- line-by-line headline reveal --- */
+.lines {
+  display: grid;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.line > span {
+  display: block;
+}
+
+.has-motion .line > span {
+  transform: translateY(105%);
+  transition: transform 0.85s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+
+.has-motion .line.is-in > span {
+  transform: none;
+}
+
+/* --- marquee --- */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  flex: none;
+  gap: var(--marquee-gap, 2.5rem);
+  padding-right: var(--marquee-gap, 2.5rem);
+  min-width: 100%;
+  animation: marquee var(--marquee-speed, 34s) linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* --- ambient float, used by the statue artwork --- */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.floats {
+  animation: float 7s ease-in-out infinite;
+}
+
+/* --- slow halo rotation behind a figure --- */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- counters hold their space while they tick --- */
+.tally {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .has-motion [data-reveal],
+  .has-motion [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+
+  .has-motion .line > span {
+    transform: none;
+    transition: none;
+  }
+
+  .marquee__track,
+  .floats {
+    animation: none;
+  }
+
+  .marquee {
+    overflow-x: auto;
+  }
+}

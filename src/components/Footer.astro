@@ -1,0 +1,169 @@
+---
+import Icon from './Icon.astro';
+import { nav, services, site } from '../data/site';
+
+const year = new Date().getFullYear();
+const telHref = `tel:${site.phone.replace(/[^+\d]/g, '')}`;
+---
+
+<footer class="ft">
+  <div class="shell">
+    <div class="ft__grid">
+      <div class="ft__brand">
+        <a class="ft__logo" href="#top">
+          <span class="ft__mark" aria-hidden="true"><Icon name="scale" size={17} /></span>
+          Lawyer Near By
+        </a>
+        <p class="ft__blurb">
+          Reliable legal support focused on protecting your rights with clarity, integrity and
+          results.
+        </p>
+        <p class="ft__reg">{site.regulator}</p>
+      </div>
+
+      <nav class="ft__col" aria-label="Footer navigation">
+        <h3 class="ft__h">Quick links</h3>
+        <ul>
+          {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="ft__col">
+        <h3 class="ft__h">Practice areas</h3>
+        <ul>
+          {services.map((service) => <li><a href="#services">{service.title}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="ft__col">
+        <h3 class="ft__h">Contact</h3>
+        <ul class="ft__contact">
+          <li><Icon name="phone" size={15} /><a href={telHref}>{site.phone}</a></li>
+          <li><Icon name="mail" size={15} /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><Icon name="pin" size={15} /><span>{site.address}</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ft__bottom">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <p class="ft__legal">
+        Information on this site is general in nature and is not a substitute for legal advice on
+        your specific matter.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    padding-top: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+    background: var(--c-page);
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  .ft__grid {
+    display: grid;
+    gap: 2.25rem;
+  }
+
+  .ft__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+
+  .ft__mark {
+    display: grid;
+    place-items: center;
+    width: 2.05rem;
+    height: 2.05rem;
+    border-radius: 12px;
+    background: var(--c-fir);
+    color: var(--c-lime);
+  }
+
+  .ft__blurb {
+    margin-top: 1rem;
+    max-width: 24rem;
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+    line-height: 1.7;
+  }
+
+  .ft__reg {
+    margin-top: 0.85rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--c-ink-faint);
+  }
+
+  .ft__h {
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .ft__col ul {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  .ft__col a:hover {
+    color: var(--c-fir);
+  }
+
+  .ft__contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .ft__contact :global(svg) {
+    flex: none;
+    margin-top: 0.15rem;
+    color: var(--c-fir);
+  }
+
+  .ft__bottom {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: clamp(2rem, 1.4rem + 2vw, 3rem);
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--c-hairline);
+    font-size: var(--fs-micro);
+    color: var(--c-ink-faint);
+  }
+
+  .ft__legal {
+    max-width: 44rem;
+  }
+
+  @media (min-width: 720px) {
+    .ft__grid {
+      grid-template-columns: 1.4fr 1fr 1.1fr 1.2fr;
+      gap: 2rem;
+    }
+
+    .ft__bottom {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .ft__legal {
+      text-align: right;
+    }
+  }
+</style>

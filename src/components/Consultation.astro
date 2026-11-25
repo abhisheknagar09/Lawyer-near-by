@@ -1,0 +1,251 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Affordable Legal Consultation — presentation only.
+ *
+ * This section is a visual offer display. It deliberately contains no plan,
+ * price or subscription identifiers, no checkout, booking or payment logic,
+ * and no backend calls. The call to action is plain on-page navigation.
+ */
+
+const features = [
+  { icon: 'clock', label: 'Up to 30 minutes of consultation' },
+  { icon: 'audio', label: 'Audio consultation' },
+  { icon: 'video', label: 'Video consultation' },
+  { icon: 'globe', label: 'Multiple language support' },
+] as const;
+---
+
+<section class="consult" id="consultation" aria-labelledby="consult-title">
+  <div class="shell">
+    <div class="offer">
+      <div class="offer__copy">
+        <span class="eyebrow">
+          <Icon name="sparkle" size={13} />
+          Affordable consultation
+        </span>
+
+        <h2 class="offer__title" id="consult-title">
+          Expert legal guidance, <span class="accent">without the heavy price tag.</span>
+        </h2>
+
+        <p class="lede offer__lede">
+          Get professional legal guidance for your personal or business legal concerns through an
+          affordable consultation.
+        </p>
+
+        <!-- price and duration, side by side -->
+        <div class="price">
+          <p class="price__amount" aria-hidden="true">
+            <span class="price__currency">₹</span><span class="price__figure">50</span>
+          </p>
+
+          <span class="price__rule" aria-hidden="true"></span>
+
+          <p class="price__duration" aria-hidden="true">
+            <span class="price__minutes">30</span>
+            <span class="price__unit">Minutes</span>
+          </p>
+
+          <p class="sr-only">50 rupees for a consultation of up to 30 minutes.</p>
+        </div>
+
+        <p class="offer__note">
+          <Icon name="shield" size={15} />
+          Confidential by default, with Bar Council verified advocates.
+        </p>
+      </div>
+
+      <div class="card">
+        <p class="card__label">What is included</p>
+
+        <ul class="card__list">
+          {
+            features.map((feature) => (
+              <li class="card__item">
+                <span class="card__icon" aria-hidden="true">
+                  <Icon name={feature.icon} size={16} />
+                </span>
+                {feature.label}
+              </li>
+            ))
+          }
+        </ul>
+
+        <a class="btn btn--lime card__cta" href="#contact">
+          Explore Consultation
+          <span class="btn__arrow" aria-hidden="true">
+            <Icon name="arrow-up-right" size={13} />
+          </span>
+        </a>
+
+        <p class="card__fine">
+          One consultation, start to finish. No obligation to continue afterwards.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .consult {
+    /* matches the padding every other section gets, so the gaps either side
+       of this panel are the same as everywhere else on the page */
+    padding-block: var(--section-y);
+  }
+
+  .offer {
+    display: grid;
+    gap: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+    align-items: center;
+    padding: clamp(1.5rem, 1rem + 2.4vw, 3rem);
+    border-radius: var(--r-panel);
+    background: var(--c-sand);
+  }
+
+  .offer__title {
+    margin-top: 0.85rem;
+    font-size: var(--fs-h2);
+  }
+
+  .offer__lede {
+    margin-top: 0.9rem;
+    max-width: 44ch;
+  }
+
+  /* --- price --- */
+  .price {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.9rem, 0.5rem + 1.6vw, 1.5rem);
+    margin-top: clamp(1.25rem, 1rem + 1vw, 1.6rem);
+  }
+
+  .price__amount {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.06em;
+    line-height: 0.88;
+    font-family: var(--font-display);
+    color: var(--c-fir);
+  }
+
+  .price__currency {
+    font-size: clamp(1.5rem, 1rem + 2vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .price__figure {
+    font-size: clamp(3.75rem, 2.2rem + 7vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+  }
+
+  .price__rule {
+    width: 2px;
+    align-self: stretch;
+    margin-block: 0.5rem;
+    border-radius: 2px;
+    background: rgba(14, 59, 46, 0.18);
+  }
+
+  .price__duration {
+    display: grid;
+    line-height: 1;
+    font-family: var(--font-display);
+  }
+
+  .price__minutes {
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 2.9rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--c-fir);
+  }
+
+  .price__unit {
+    margin-top: 0.35rem;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-ink-soft);
+  }
+
+  .offer__note {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 1.4rem;
+    font-size: var(--fs-small);
+    font-weight: 500;
+    color: var(--c-ink-soft);
+  }
+
+  .offer__note :global(svg) {
+    flex: none;
+    color: var(--c-fir);
+  }
+
+  /* --- included card --- */
+  .card {
+    padding: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+    border-radius: var(--r-card);
+    background: var(--c-page);
+  }
+
+  .card__label {
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .card__list {
+    display: grid;
+    gap: 0.8rem;
+    margin: 1rem 0 0;
+  }
+
+  .card__item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  .card__icon {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border-radius: 11px;
+    background: var(--c-fir);
+    color: var(--c-lime);
+  }
+
+  .card__cta {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1.4rem;
+  }
+
+  .card__fine {
+    margin-top: 1rem;
+    font-size: var(--fs-micro);
+    color: var(--c-ink-faint);
+  }
+
+  @media (min-width: 900px) {
+    .offer {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

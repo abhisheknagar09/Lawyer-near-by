@@ -1,0 +1,230 @@
+---
+import '../../styles/global.css';
+import '../../styles/motion.css';
+import Icon from '../../components/Icon.astro';
+
+const items = [
+  {
+    slug: 'reveal',
+    n: '01',
+    name: 'Reveal',
+    motion: 'Masked headline, staggered scroll reveals, parallax figure, looping ticker',
+    look: 'Open Counsel on cream, bronze figure on a sand disc',
+    img: '/images/justice-bronze.png',
+    alt: 'Bronze figure of Justice',
+  },
+  {
+    slug: 'spotlight',
+    n: '02',
+    name: 'Spotlight',
+    motion: 'Cursor-lit hero, counters that tick up, cards and buttons that lean to the pointer',
+    look: 'Near-black green with lime, steel figure under a glow',
+    img: '/images/justice-steel.png',
+    alt: 'Steel figure of Justice',
+  },
+  {
+    slug: 'kinetic',
+    n: '03',
+    name: 'Kinetic',
+    motion: 'Cycling headline word, sticky route rail that lights the step you are on, dragged strip',
+    look: 'Oversized type on cream, carved figure on a sand band',
+    img: '/images/justice-stone.png',
+    alt: 'Carved figure of Justice',
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Homepage Motion Studies — Lawyer Near By</title>
+    <meta name="description" content="Three animated variations of the Lawyer Near By homepage." />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    />
+  </head>
+
+  <body>
+    <main class="shell page">
+      <header class="head">
+        <a class="back" href="/"><span aria-hidden="true">&larr;</span> Live homepage</a>
+        <h1 class="head__title">Three motion studies</h1>
+        <p class="lede head__lede">
+          The same homepage content and the same Open Counsel palette, with three different motion
+          languages. Everything still works with JavaScript off and with reduced motion on.
+        </p>
+      </header>
+
+      <ul class="list">
+        {
+          items.map((item) => (
+            <li class="item">
+              <a class="item__link" href={`/variations/${item.slug}/`}>
+                <div class="item__art" aria-hidden="true">
+                  <img src={item.img} alt="" width="300" height="400" loading="lazy" />
+                </div>
+                <div class="item__body">
+                  <span class="item__n">{item.n}</span>
+                  <h2 class="item__name">{item.name}</h2>
+                  <p class="item__motion">{item.motion}</p>
+                  <p class="item__look">{item.look}</p>
+                  <span class="item__go">
+                    Open variation
+                    <Icon name="arrow-up-right" size={14} />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="note">
+        These pages live at <code>src/pages/variations/</code> and are marked
+        <code>noindex</code>. The ₹50 consultation stays display-only in all three — no plan ids,
+        no checkout, no booking calls.
+      </p>
+    </main>
+  </body>
+</html>
+
+<style>
+  .page {
+    padding-block: clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
+  }
+
+  .back {
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .back:hover {
+    color: var(--c-fir);
+  }
+
+  .head {
+    max-width: 46rem;
+  }
+
+  .head__title {
+    margin-top: 1rem;
+    font-size: var(--fs-h2);
+  }
+
+  .head__lede {
+    margin-top: 0.9rem;
+  }
+
+  .list {
+    display: grid;
+    gap: 1rem;
+    margin: clamp(2rem, 1.4rem + 2.4vw, 3rem) 0 0;
+  }
+
+  .item__link {
+    display: grid;
+    height: 100%;
+    border-radius: var(--r-card);
+    background: var(--c-card);
+    border: 1px solid var(--c-hairline);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .item__link:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .item__art {
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: var(--c-sand);
+  }
+
+  .item__art img {
+    width: auto;
+    height: clamp(140px, 20vw, 190px);
+    object-fit: contain;
+  }
+
+  .item__body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .item__n {
+    font-family: var(--font-display);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--c-ink-faint);
+  }
+
+  .item__name {
+    margin-top: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+
+  .item__motion {
+    margin-top: 0.7rem;
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  .item__look {
+    margin-top: 0.5rem;
+    font-size: var(--fs-micro);
+    color: var(--c-ink-faint);
+  }
+
+  .item__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--c-fir);
+  }
+
+  .note {
+    margin-top: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+    padding: 1rem 1.2rem;
+    border-left: 2px solid var(--c-fir);
+    border-radius: 0 12px 12px 0;
+    background: var(--c-card);
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+    max-width: 62ch;
+  }
+
+  .note code {
+    font-size: 0.9em;
+    padding: 0.1rem 0.35rem;
+    border-radius: 5px;
+    background: var(--c-sand);
+  }
+
+  @media (min-width: 760px) {
+    .list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

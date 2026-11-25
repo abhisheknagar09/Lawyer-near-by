@@ -1,0 +1,326 @@
+---
+import VariationLayout from '../../layouts/VariationLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Services from '../../components/Services.astro';
+import Consultation from '../../components/Consultation.astro';
+import Process from '../../components/Process.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import { services } from '../../data/site';
+
+const headline = ['Legal help that', 'starts with a', 'real conversation.'];
+
+const counters = [
+  { to: 12, suffix: '+', label: 'Years in practice' },
+  { to: 2400, suffix: '+', label: 'Matters handled' },
+  { to: 95, suffix: '%', label: 'Favourable outcomes' },
+  { to: 6, suffix: '', label: 'Languages spoken' },
+];
+
+const ticker = [...services, ...services];
+---
+
+<VariationLayout
+  title="Reveal — Lawyer Near By"
+  description="Scroll-choreographed motion study: masked headline, floating figure, staggered reveals."
+  current="reveal"
+>
+  <!-- ══ hero ══════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="shell hero__grid">
+      <div class="hero__copy">
+        <span class="eyebrow" data-reveal="up">
+          <Icon name="sparkle" size={13} />
+          Consultations from ₹50
+        </span>
+
+        <h1 class="hero__title lines">
+          {
+            headline.map((line, i) => (
+              <span class="line" style={`--d:${120 + i * 110}ms`}>
+                <span>
+                  {i === 2 ? <em class="hero__accent">{line}</em> : line}
+                </span>
+              </span>
+            ))
+          }
+        </h1>
+
+        <p class="lede hero__lede" data-reveal="up" style="--d:520ms">
+          Talk to a practising advocate about your matter — in your language, by audio or video,
+          before you commit to anything.
+        </p>
+
+        <div class="hero__actions" data-reveal="up" style="--d:620ms">
+          <a class="btn btn--lime" href="#consultation">
+            Explore consultation
+            <span class="btn__arrow" aria-hidden="true">
+              <Icon name="arrow-up-right" size={13} />
+            </span>
+          </a>
+          <a class="btn btn--fir" href="#services">
+            Browse practice areas
+            <span class="btn__arrow" aria-hidden="true">
+              <Icon name="arrow-up-right" size={13} />
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <figure class="figure" data-reveal="scale" style="--d:300ms">
+        <span class="figure__disc" aria-hidden="true"></span>
+        <svg class="figure__ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="50" r="49.6" />
+        </svg>
+        <img
+          class="figure__img floats"
+          src="/images/justice-bronze.png"
+          alt="Bronze figure of Justice holding scales and a sword"
+          width="843"
+          height="1100"
+          fetchpriority="high"
+          data-parallax
+        />
+      </figure>
+    </div>
+
+    <ul class="shell counters">
+      {
+        counters.map((c, i) => (
+          <li class="counter" data-reveal="up" style={`--d:${i * 90}ms`}>
+            <strong class="counter__value tally" data-tally={c.to} data-suffix={c.suffix}>
+              0{c.suffix}
+            </strong>
+            <span class="counter__label">{c.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- ══ ticker ════════════════════════════════════════════ -->
+  <section class="ticker" aria-label="Practice areas">
+    <div class="marquee" style="--marquee-gap:3rem;--marquee-speed:36s">
+      <div class="marquee__track">
+        {
+          ticker.map((s) => (
+            <span class="ticker__item">
+              <Icon name={s.icon as any} size={17} />
+              {s.title}
+            </span>
+          ))
+        }
+      </div>
+      <div class="marquee__track" aria-hidden="true">
+        {
+          ticker.map((s) => (
+            <span class="ticker__item">
+              <Icon name={s.icon as any} size={17} />
+              {s.title}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ reused sections, revealed on scroll ═══════════════ -->
+  <div data-reveal="up"><Services /></div>
+  <div data-reveal="up"><Consultation /></div>
+  <div data-reveal="up"><Process /></div>
+  <div data-reveal="up"><Testimonials /></div>
+  <div data-reveal="up"><Contact /></div>
+  <Footer />
+</VariationLayout>
+
+<script>
+  // Gentle parallax drift on the figure. Transform only, rAF-throttled.
+  const el = document.querySelector<HTMLElement>('[data-parallax]');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (el && !reduced) {
+    let ticking = false;
+
+    const update = () => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) {
+        const progress = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+        el.style.setProperty('--shift', `${(progress - 0.5) * -46}px`);
+      }
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+</script>
+
+<style>
+  .hero {
+    padding-block: clamp(2rem, 1.2rem + 3vw, 4rem) clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    align-items: center;
+  }
+
+  .hero__title {
+    margin-top: 1.2rem;
+    font-size: var(--fs-display);
+    letter-spacing: -0.042em;
+  }
+
+  .hero__accent {
+    font-style: normal;
+    color: var(--c-fir);
+    background: linear-gradient(180deg, transparent 62%, var(--c-lime-wash) 62%);
+  }
+
+  .hero__lede {
+    margin-top: 1.15rem;
+    max-width: 40ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.9rem;
+  }
+
+  /* --- the figure --- */
+  .figure {
+    position: relative;
+    display: grid;
+    place-items: end center;
+    margin: 0;
+    min-height: clamp(320px, 46vw, 520px);
+  }
+
+  .figure__disc,
+  .figure__ring {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .figure__disc {
+    left: 50%;
+    bottom: 6%;
+    translate: -50% 0;
+    width: min(88%, 380px);
+    aspect-ratio: 1;
+    background: radial-gradient(circle at 50% 42%, var(--c-sand), var(--c-sand-deep) 72%);
+  }
+
+  /* The dashes travel by animating stroke-dashoffset rather than rotating a
+     square box, whose bounding box would grow past the viewport on a phone. */
+  .figure__ring {
+    left: 50%;
+    bottom: 2%;
+    translate: -50% 0;
+    width: min(100%, 430px);
+    height: auto;
+    aspect-ratio: 1;
+    overflow: visible;
+  }
+
+  .figure__ring circle {
+    fill: none;
+    stroke: rgba(14, 59, 46, 0.24);
+    stroke-width: 0.3;
+    stroke-dasharray: 1.6 2.6;
+    animation: ring-travel 44s linear infinite;
+  }
+
+  @keyframes ring-travel {
+    to {
+      stroke-dashoffset: -84;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .figure__ring circle {
+      animation: none;
+    }
+  }
+
+  .figure__img {
+    position: relative;
+    width: auto;
+    max-width: 100%;
+    height: clamp(300px, 42vw, 480px);
+    object-fit: contain;
+    translate: 0 var(--shift, 0px);
+    filter: drop-shadow(0 26px 34px rgba(14, 59, 46, 0.3));
+  }
+
+  /* --- counters --- */
+  .counters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+    margin-top: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+    padding-top: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+    border-top: 1px solid var(--c-hairline);
+  }
+
+  .counter__value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1.1;
+    color: var(--c-fir);
+  }
+
+  .counter__label {
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  /* --- ticker --- */
+  .ticker {
+    padding-block: 1.1rem;
+    background: var(--c-fir);
+    color: var(--c-on-fir);
+  }
+
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .ticker__item :global(svg) {
+    color: var(--c-lime);
+  }
+
+  @media (min-width: 620px) {
+    .counters {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero__grid {
+      grid-template-columns: 1.08fr 0.92fr;
+    }
+  }
+</style>
