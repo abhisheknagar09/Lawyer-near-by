@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SmoothScroll from '../components/SmoothScroll.astro';
 import { url } from '../lib/url';
 
 interface Props {
@@ -37,6 +38,7 @@ const {
   <body>
     <a href="#main" class="skip">Skip to content</a>
     <slot />
+    <SmoothScroll />
   </body>
 </html>
 

@@ -1,0 +1,1321 @@
+---
+import VariationLayout from '../../layouts/VariationLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { cases, faqs, heroStats, nav, process, services, site, testimonials } from '../../data/site';
+import { url } from '../../lib/url';
+
+const headline = ['Decide with', 'the law on', 'your side.'];
+
+/** What the half hour is spent on, in order. Display only, like the price. */
+const halfHour = [
+  { title: 'You explain', body: 'What happened, in plain words and in your language.' },
+  { title: 'We ask', body: 'The few questions that actually decide the outcome.' },
+  { title: 'You get an answer', body: 'Where you stand, your options, and what each would cost.' },
+] as const;
+
+const included = [
+  { icon: 'audio', label: 'Audio consultation' },
+  { icon: 'video', label: 'Video consultation' },
+  { icon: 'globe', label: 'Multiple language support' },
+  { icon: 'shield', label: 'Bar Council verified advocates' },
+] as const;
+
+const ticks = Array.from({ length: 31 }, (_, i) => i);
+const telHref = `tel:${site.phone.replace(/[^+\d]/g, '')}`;
+---
+
+<VariationLayout
+  title="Chambers — Lawyer Near By"
+  description="Navy, white and pale blue study: a portrait hero, a 30 minute ruler and a court cause list."
+  current="chambers"
+  theme="navy"
+>
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Poppins:wght@500;600&display=swap"
+  />
+
+  <div class="ch" id="top">
+    <!-- ══ hero ════════════════════════════════════════════ -->
+    <section class="hero">
+      <header class="shell top">
+        <a class="brand" href="#top" aria-label={`${site.name}, back to top`}>
+          <span class="brand__mark" aria-hidden="true"><Icon name="scale" size={18} /></span>
+          <span>
+            <span class="brand__name">{site.name}</span>
+            <span class="brand__tag">Advocates &amp; legal counsel</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <ul class="nav__list">
+            {nav.map((item) => <li><a class="nav__link" href={item.href}>{item.label}</a></li>)}
+          </ul>
+        </nav>
+
+        <a class="top__cta" href="#contact">Book a call</a>
+
+        <details class="menu" data-menu>
+          <summary class="menu__btn">Menu</summary>
+          <ul class="menu__list">
+            {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+            <li><a href="#contact">Book a call</a></li>
+          </ul>
+        </details>
+      </header>
+
+      <div class="shell hero__in">
+        <div class="hero__copy">
+          <p class="kick kick--on" data-reveal="up">Legal counsel in Indore and online</p>
+
+          <h1 class="hero__title lines">
+            {
+              headline.map((line, i) => (
+                <span class="line" style={`--d:${100 + i * 110}ms`}>
+                  <span>{line}</span>
+                </span>
+              ))
+            }
+          </h1>
+
+          <p class="hero__lede" data-reveal="up" style="--d:460ms">
+            Speak to a practising advocate before you sign, reply or file. Audio or video, in the
+            language you think in.
+          </p>
+
+          <div class="hero__act" data-reveal="up" style="--d:560ms">
+            <a class="cta cta--white" href="#consultation">
+              See the ₹50 consultation
+              <Icon name="arrow-up-right" size={15} />
+            </a>
+            <p class="hero__note">Up to 30 minutes. No obligation to continue.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__photo">
+        <img
+          src={url('/images/chambers.jpg')}
+          alt="Advocate in black robes reading a brief at a desk, with law reports on the shelves behind"
+          width="1025"
+          height="1500"
+          fetchpriority="high"
+        />
+      </div>
+    </section>
+
+    <!-- ══ figures ═════════════════════════════════════════ -->
+    <div class="figures">
+      <ul class="shell figures__list">
+        {
+          heroStats.map((s) => (
+            <li>
+              <strong>{s.value}</strong>
+              <span>{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- ══ about ═══════════════════════════════════════════ -->
+    <section class="sec" id="about">
+      <div class="shell split">
+        <div data-reveal="up">
+          <p class="kick">Why ask early</p>
+          <h2 class="h2">Most disputes start before anyone calls a lawyer</h2>
+        </div>
+        <div class="split__body" data-reveal="up" style="--d:100ms">
+          <p>
+            A clause goes unread. A notice gets an angry reply. A limitation date passes while
+            everyone waits to see what happens. By the time the matter reaches a courtroom, the
+            choices that shaped it were made months earlier.
+          </p>
+          <p class="pull">
+            One clear opinion before you act tells you your rights, your duties and your risk.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ practice ════════════════════════════════════════ -->
+    <section class="sec sec--navy" id="services">
+      <div class="shell">
+        <div class="split split--head">
+          <div data-reveal="up">
+            <p class="kick kick--on">Practice areas</p>
+            <h2 class="h2">Counsel for business, home and family</h2>
+          </div>
+          <p class="split__aside" data-reveal="up" style="--d:100ms">
+            The advocate you speak to is the advocate who handles your matter.
+          </p>
+        </div>
+
+        <ul class="areas">
+          {
+            services.map((s) => (
+              <li class="area" data-reveal="up">
+                <span class="area__icon" aria-hidden="true">
+                  <Icon name={s.icon} size={20} />
+                </span>
+                <h3 class="area__title">{s.title}</h3>
+                <p class="area__body">{s.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ consultation: presentation only, see README ══════ -->
+    <section class="sec sec--mist" id="consultation" aria-labelledby="half-hour">
+      <div class="shell">
+        <div class="offer">
+          <div data-reveal="up">
+            <p class="kick">Affordable consultation</p>
+            <h2 class="h2" id="half-hour">Half an hour with an advocate, for fifty rupees</h2>
+          </div>
+
+          <p class="price" data-reveal="up" style="--d:100ms">
+            <span aria-hidden="true"><i>₹</i>50</span>
+            <span class="price__for" aria-hidden="true">for 30 minutes</span>
+            <span class="sr-only">50 rupees for a consultation of up to 30 minutes.</span>
+          </p>
+        </div>
+
+        <div class="ruler" data-reveal="up">
+          <div class="ruler__ticks" aria-hidden="true">
+            {ticks.map((i) => <span class:list={['tick', { 'tick--long': i % 5 === 0 }]} style={`--i:${i}`} />)}
+          </div>
+          <div class="ruler__ends" aria-hidden="true"><span>0 min</span><span>30 min</span></div>
+
+          <ol class="phases">
+            {
+              halfHour.map((p) => (
+                <li>
+                  <h3>{p.title}</h3>
+                  <p>{p.body}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <div class="incl" data-reveal="up">
+          <ul class="incl__list">
+            {
+              included.map((f) => (
+                <li>
+                  <Icon name={f.icon} size={17} />
+                  {f.label}
+                </li>
+              ))
+            }
+          </ul>
+          <a class="cta cta--navy" href="#contact">
+            Explore consultation
+            <Icon name="arrow-up-right" size={15} />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ cases ═══════════════════════════════════════════ -->
+    <section class="sec" id="cases">
+      <div class="shell">
+        <div class="split split--head">
+          <div data-reveal="up">
+            <p class="kick">Recent work</p>
+            <h2 class="h2">Matters we have seen through</h2>
+          </div>
+          <p class="split__aside" data-reveal="up" style="--d:100ms">
+            Client names are withheld as a matter of course.
+          </p>
+        </div>
+
+        <!-- set like a court's daily cause list -->
+        <div class="list" data-reveal="up">
+          <div class="list__row list__row--head" aria-hidden="true">
+            <span>Item</span><span>Matter</span><span>Practice</span><span>Closed</span>
+          </div>
+          <ol>
+            {
+              cases.map((c, i) => (
+                <li class="list__row">
+                  <span class="list__n" aria-hidden="true">{i + 1}</span>
+                  <h3 class="list__title">{c.title}</h3>
+                  <span class="list__cat">{c.category}</span>
+                  <span class="list__date">{c.date}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ process ═════════════════════════════════════════ -->
+    <section class="sec sec--mist" id="process">
+      <div class="shell">
+        <div data-reveal="up">
+          <p class="kick">How it works</p>
+          <h2 class="h2">From first message to clear advice</h2>
+        </div>
+        <ol class="steps">
+          {
+            process.map((p, i) => (
+              <li class="step" data-reveal="up" style={`--d:${i * 80}ms`}>
+                <span class="step__n">{i + 1}</span>
+                <h3 class="step__title">{p.title}</h3>
+                <p class="step__body">{p.body}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- ══ clients ═════════════════════════════════════════ -->
+    <section class="sec" id="testimonials">
+      <div class="shell">
+        <div data-reveal="up">
+          <p class="kick">Clients</p>
+          <h2 class="h2">What people say afterwards</h2>
+        </div>
+        <ul class="quotes">
+          {
+            testimonials.map((t, i) => (
+              <li class="quote" data-reveal="up" style={`--d:${i * 80}ms`}>
+                <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+                <p class="quote__by">
+                  <strong>{t.name}</strong>
+                  <span>{t.role}</span>
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ faqs ════════════════════════════════════════════ -->
+    <section class="sec sec--ruled" id="faqs">
+      <div class="shell split split--faq">
+        <div data-reveal="up">
+          <p class="kick">FAQs</p>
+          <h2 class="h2">Questions worth asking first</h2>
+        </div>
+        <ul class="faq" data-reveal="up" style="--d:100ms">
+          {
+            faqs.map((f, i) => (
+              <li>
+                <details name="chambers-faq" open={i === 0}>
+                  <summary>
+                    <span>{f.q}</span>
+                    <span class="faq__mark" aria-hidden="true"><Icon name="plus" size={18} /></span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ contact ═════════════════════════════════════════ -->
+    <section class="close" id="contact">
+      <div class="shell close__in">
+        <div class="close__copy" data-reveal="up">
+          <p class="kick kick--on">Get started</p>
+          <h2 class="h2">Tell us what happened, in your own words</h2>
+          <p class="close__lede">
+            No jargon needed. We work out what matters, and tell you what your options actually
+            cost.
+          </p>
+          <div class="close__acts">
+            <a class="cta cta--white" href={telHref}>
+              <Icon name="phone" size={16} />
+              Call {site.phone}
+            </a>
+            <a class="cta cta--line" href={`mailto:${site.email}`}>
+              <Icon name="mail" size={16} />
+              {site.email}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="close__photo" aria-hidden="true">
+        <img src={url('/images/chambers.jpg')} alt="" width="1025" height="1500" loading="lazy" />
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="shell foot__in">
+        <p>&copy; {new Date().getFullYear()} {site.name}, {site.address}</p>
+        <p>{site.regulator}</p>
+        <p>General information only, not advice on your specific matter.</p>
+      </div>
+    </footer>
+  </div>
+</VariationLayout>
+
+<script>
+  // The menu works without this; it only closes itself after a choice.
+  const menu = document.querySelector<HTMLDetailsElement>('[data-menu]');
+
+  if (menu) {
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => (menu.open = false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') menu.open = false;
+    });
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target as Node)) menu.open = false;
+    });
+  }
+</script>
+
+<!-- tokens sit on body so the switcher bar, skip link and focus ring follow -->
+<style is:global>
+  body.theme-navy {
+    --c-page: #ffffff;
+    --c-fir: #0b2348;
+    --c-fir-deep: #061630;
+    --c-on-fir: #ffffff;
+    --c-ink: #0b2348;
+    --c-ink-soft: #4a5d79;
+    --font-display: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+    --font-body: 'Manrope', 'Segoe UI', system-ui, sans-serif;
+
+    --navy: #0b2348;
+    --navy-deep: #061630;
+    --blue: #1f5fd6;
+    --sky: #9fc5ff;
+    --mist: #eef4fc;
+    --line: #d3e0f1;
+    --line-on: rgba(190, 215, 250, 0.2);
+    --on-soft: #c3d4ec;
+
+    --bar-bg: #061630;
+    --bar-line: rgba(190, 215, 250, 0.16);
+    --bar-ink: #b4c8e6;
+    --bar-on: #9fc5ff;
+  }
+
+  body.theme-navy .bar :focus-visible,
+  body.theme-navy .hero :focus-visible,
+  body.theme-navy .close :focus-visible {
+    outline-color: var(--sky);
+  }
+</style>
+
+<style>
+  .ch {
+    --sec-y: clamp(4rem, 2.8rem + 4.2vw, 6.5rem);
+    --gap: clamp(2rem, 1rem + 5vw, 6rem);
+  }
+
+  /* --- type --- */
+  .kick {
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .kick--on {
+    color: var(--sky);
+  }
+
+  .h2 {
+    margin-top: 1rem;
+    max-width: 17ch;
+    font-size: clamp(1.9rem, 1.35rem + 2.3vw, 3.1rem);
+    font-weight: 600;
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+  }
+
+  /* --- buttons --- */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.8rem 1.5rem;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    border: 1px solid transparent;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+
+  .cta :global(svg) {
+    flex: none;
+    transition: transform 0.25s var(--ease);
+  }
+
+  .cta:hover :global(svg) {
+    transform: translate(2px, -2px);
+  }
+
+  .cta--white {
+    background: #ffffff;
+    color: var(--navy);
+  }
+
+  .cta--white:hover {
+    background: var(--sky);
+  }
+
+  .cta--navy {
+    background: var(--navy);
+    color: #ffffff;
+  }
+
+  .cta--navy:hover {
+    background: var(--blue);
+  }
+
+  .cta--line {
+    border-color: rgba(190, 215, 250, 0.45);
+    color: #ffffff;
+  }
+
+  .cta--line:hover {
+    border-color: #ffffff;
+  }
+
+  .ch :focus-visible {
+    border-radius: 0;
+  }
+
+  /* --- hero --- */
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--navy);
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  .top {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 1.35rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-right: auto;
+  }
+
+  .brand__mark {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid rgba(190, 215, 250, 0.5);
+  }
+
+  .brand__name,
+  .brand__tag {
+    display: block;
+    line-height: 1.3;
+  }
+
+  .brand__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .brand__tag {
+    font-size: var(--fs-micro);
+    color: var(--on-soft);
+  }
+
+  .nav,
+  .top__cta {
+    display: none;
+  }
+
+  .nav__list {
+    display: flex;
+    gap: 1.6rem;
+  }
+
+  .nav__link {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: #ffffff;
+    padding-block: 0.4rem;
+    background: linear-gradient(var(--sky), var(--sky)) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.25s var(--ease);
+  }
+
+  .nav__link:hover {
+    background-size: 100% 1px;
+  }
+
+  .top__cta {
+    padding: 0.7rem 1.2rem;
+    border: 1px solid rgba(190, 215, 250, 0.55);
+    font-size: var(--fs-small);
+    font-weight: 700;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .top__cta:hover {
+    background: #ffffff;
+    color: var(--navy);
+  }
+
+  .menu {
+    position: relative;
+  }
+
+  .menu__btn {
+    padding: 0.7rem 1.1rem;
+    border: 1px solid rgba(190, 215, 250, 0.55);
+    font-size: var(--fs-small);
+    font-weight: 700;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .menu__btn::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu__list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    width: min(16rem, 76vw);
+    background: #ffffff;
+    color: var(--navy);
+    box-shadow: 0 24px 48px -20px rgba(6, 22, 48, 0.6);
+  }
+
+  .menu__list li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .menu__list a {
+    display: block;
+    padding: 0.85rem 1.1rem;
+    font-weight: 600;
+  }
+
+  .menu__list a:hover {
+    background: var(--mist);
+  }
+
+  .hero__in {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(2rem, 1rem + 4vw, 4rem) 2rem;
+  }
+
+  .hero__title {
+    margin-top: 1.2rem;
+    font-size: clamp(2.7rem, 1.75rem + 4.1vw, 4.75rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.042em;
+  }
+
+  /* room for Poppins descenders inside the masked lines */
+  .hero__title .line {
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  .hero__lede {
+    margin-top: 1.6rem;
+    max-width: 38ch;
+    text-wrap: balance;
+    font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.175rem);
+    line-height: 1.65;
+    color: var(--on-soft);
+  }
+
+  .hero__act {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 2.1rem;
+  }
+
+  .hero__note {
+    font-size: var(--fs-small);
+    color: var(--on-soft);
+  }
+
+  .hero__photo {
+    position: relative;
+  }
+
+  .hero__photo img {
+    width: 100%;
+    height: clamp(380px, 108vw, 620px);
+    object-fit: cover;
+    object-position: 50% 26%;
+  }
+
+  /* the library fades into the navy on every edge the copy touches */
+  .hero__photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--navy) 0%, rgba(11, 35, 72, 0.12) 32%, transparent 60%);
+  }
+
+  /* --- figures --- */
+  .figures {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .figures__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.6rem 1.25rem;
+    padding-block: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+  }
+
+  .figures strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 1.35rem + 1.4vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .figures span {
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  /* --- sections --- */
+  .sec {
+    padding-block: var(--sec-y);
+  }
+
+  .sec--mist {
+    background: var(--mist);
+  }
+
+  .sec--navy {
+    background: var(--navy);
+    color: #ffffff;
+  }
+
+  .sec--ruled {
+    border-top: 1px solid var(--line);
+  }
+
+  .split {
+    display: grid;
+    gap: 1.75rem var(--gap);
+  }
+
+  .split__body {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--c-ink-soft);
+  }
+
+  .pull {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
+    color: var(--blue);
+  }
+
+  .split__aside {
+    max-width: 34ch;
+    color: var(--c-ink-soft);
+  }
+
+  .sec--navy .split__aside {
+    color: var(--on-soft);
+  }
+
+  /* --- practice rows --- */
+  .areas {
+    margin-top: clamp(2.25rem, 1.6rem + 2.6vw, 4rem);
+    border-bottom: 1px solid var(--line-on);
+  }
+
+  .area {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: 0.6rem 1rem;
+    padding-block: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+    border-top: 1px solid var(--line-on);
+  }
+
+  .area__icon {
+    grid-row: span 2;
+    padding-top: 0.2rem;
+    color: var(--sky);
+  }
+
+  .area__title {
+    font-size: clamp(1.2rem, 1.08rem + 0.6vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+  }
+
+  .area__body {
+    max-width: 58ch;
+    color: var(--on-soft);
+  }
+
+  /* --- consultation --- */
+  .offer {
+    display: grid;
+    gap: 2rem var(--gap);
+    align-items: end;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 3.6rem + 6vw, 8.5rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    color: var(--blue);
+  }
+
+  .price i {
+    font-style: normal;
+    font-size: 0.5em;
+    vertical-align: 0.5em;
+    margin-right: 0.06em;
+  }
+
+  .price__for {
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--navy);
+  }
+
+  .ruler {
+    margin-top: clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+  }
+
+  .ruler__ticks {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 2.75rem;
+    border-bottom: 1px solid var(--blue);
+  }
+
+  .tick {
+    width: 2px;
+    height: 45%;
+    background: var(--blue);
+    transform-origin: bottom;
+    transition: transform 0.45s var(--ease), background-color 0.45s var(--ease);
+    transition-delay: calc(var(--i) * 32ms);
+  }
+
+  .tick--long {
+    height: 100%;
+  }
+
+  :global(.has-motion) .ruler:not(:global(.is-in)) .tick {
+    transform: scaleY(0.2);
+    background: var(--line);
+  }
+
+  .ruler__ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    color: var(--c-ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .phases {
+    display: grid;
+    gap: 1.4rem var(--gap);
+    margin-top: 1.75rem;
+  }
+
+  .phases h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .phases p {
+    margin-top: 0.4rem;
+    max-width: 34ch;
+    color: var(--c-ink-soft);
+  }
+
+  .incl {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 2rem;
+    margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+    padding-top: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .incl__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.6rem;
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  .incl__list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .incl__list :global(svg) {
+    flex: none;
+    color: var(--blue);
+  }
+
+  /* --- cause list --- */
+  .list {
+    margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+    border-top: 2px solid var(--navy);
+  }
+
+  .list__row {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    gap: 0.2rem 1rem;
+    align-items: baseline;
+    padding-block: 1.15rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  li.list__row {
+    transition: background-color 0.2s var(--ease);
+  }
+
+  li.list__row:hover {
+    background: var(--mist);
+  }
+
+  .list__row--head {
+    display: none;
+    padding-block: 0.8rem;
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    color: var(--c-ink-soft);
+  }
+
+  .list__n {
+    grid-row: span 2;
+    font-weight: 700;
+    color: var(--blue);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .list__title {
+    grid-column: 2 / -1;
+    font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .list__cat,
+  .list__date {
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  .list__cat {
+    grid-column: 2;
+  }
+
+  .list__date {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- steps --- */
+  .steps {
+    display: grid;
+    gap: 2rem var(--gap);
+    margin-top: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    gap: 0.35rem 1.1rem;
+  }
+
+  .step__n {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .step__title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .step__body {
+    color: var(--c-ink-soft);
+  }
+
+  /* --- quotes --- */
+  .quotes {
+    display: grid;
+    gap: 2rem clamp(1.5rem, 1rem + 2.4vw, 3rem);
+    margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .quote {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--blue);
+  }
+
+  .quote blockquote {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  .quote__by {
+    margin-top: auto;
+    font-size: var(--fs-small);
+    color: var(--c-ink-soft);
+  }
+
+  .quote__by strong,
+  .quote__by span {
+    display: block;
+  }
+
+  .quote__by strong {
+    color: var(--navy);
+  }
+
+  /* --- faqs --- */
+  .faq li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .faq li:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  .faq summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding-block: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq summary:hover {
+    color: var(--blue);
+  }
+
+  .faq__mark {
+    flex: none;
+    padding-top: 0.15rem;
+    color: var(--blue);
+    transition: transform 0.25s var(--ease);
+  }
+
+  .faq details[open] .faq__mark {
+    transform: rotate(45deg);
+  }
+
+  .faq details p {
+    max-width: 62ch;
+    padding-bottom: 1.5rem;
+    color: var(--c-ink-soft);
+    line-height: 1.7;
+  }
+
+  /* --- contact --- */
+  .close {
+    position: relative;
+    background: var(--navy);
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  .close__in {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--sec-y) clamp(2rem, 1rem + 3vw, 3rem);
+  }
+
+  .close__lede {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--on-soft);
+  }
+
+  .close__acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .close__photo {
+    position: relative;
+  }
+
+  /* the desk: cup, brief and papers */
+  .close__photo img {
+    width: 100%;
+    height: clamp(240px, 64vw, 380px);
+    object-fit: cover;
+    object-position: 50% 84%;
+  }
+
+  .close__photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--navy), rgba(11, 35, 72, 0.15) 55%);
+  }
+
+  .foot {
+    background: var(--navy-deep);
+    color: var(--on-soft);
+    font-size: var(--fs-small);
+  }
+
+  .foot__in {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-block: 1.75rem;
+  }
+
+  @media (min-width: 620px) {
+    .figures__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .figures li + li {
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--line);
+    }
+
+    .phases,
+    .quotes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .phases {
+      gap: 1.5rem clamp(1.5rem, 1rem + 2vw, 3rem);
+    }
+
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 760px) {
+    .list__row {
+      grid-template-columns: 4rem minmax(0, 1fr) 12rem 6rem;
+    }
+
+    .list__row--head {
+      display: grid;
+    }
+
+    .list__n {
+      grid-row: auto;
+    }
+
+    .list__title,
+    .list__cat {
+      grid-column: auto;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      min-height: clamp(640px, 54vw, 820px);
+    }
+
+    .hero__in {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding-block: 2rem 4rem;
+    }
+
+    .hero__copy {
+      max-width: 50%;
+    }
+
+    .hero__photo {
+      position: absolute;
+      inset-block: 0;
+      right: 0;
+      width: min(56%, 920px);
+    }
+
+    .hero__photo img {
+      height: 100%;
+      object-position: 50% 24%;
+    }
+
+    .hero__photo::after {
+      background:
+        linear-gradient(180deg, rgba(11, 35, 72, 0.85) 0%, transparent 24%),
+        linear-gradient(90deg, var(--navy) 0%, rgba(11, 35, 72, 0.5) 26%, transparent 58%);
+    }
+
+    .split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .split--head,
+    .offer {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      align-items: end;
+    }
+
+    .split--faq {
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+    }
+
+    .split__aside {
+      justify-self: end;
+    }
+
+    .price {
+      justify-content: flex-end;
+    }
+
+    .area {
+      grid-template-columns: 4rem minmax(0, 0.8fr) minmax(0, 1fr);
+      gap: 1rem 2rem;
+    }
+
+    .area__icon {
+      grid-row: auto;
+    }
+
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    .step {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+    }
+
+    .step__n {
+      grid-row: auto;
+      margin-bottom: 1rem;
+    }
+
+    .close__in {
+      padding-block: var(--sec-y);
+    }
+
+    .close__copy {
+      max-width: 52%;
+    }
+
+    .close__photo {
+      position: absolute;
+      inset-block: 0;
+      right: 0;
+      width: 46%;
+      overflow: hidden;
+    }
+
+    /* enlarged so the tall panel still crops below the face */
+    .close__photo img {
+      height: 100%;
+      transform: scale(1.5);
+      transform-origin: 35% 80%;
+    }
+
+    .close__photo::after {
+      background: linear-gradient(90deg, var(--navy) 0%, rgba(11, 35, 72, 0.35) 45%, transparent);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .nav,
+    .top__cta {
+      display: block;
+    }
+
+    .menu {
+      display: none;
+    }
+  }
+</style>

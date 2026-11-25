@@ -1,28 +1,34 @@
 ---
 import '../styles/global.css';
 import '../styles/motion.css';
+import SmoothScroll from '../components/SmoothScroll.astro';
 import { url } from '../lib/url';
 
 interface Props {
   title: string;
   description?: string;
   /** slug of the variation that is currently open */
-  current: 'reveal' | 'spotlight' | 'kinetic';
+  current: 'reveal' | 'spotlight' | 'chambers';
   /** dark variations get a dark page ground behind the layout */
   ground?: string;
+  /** becomes `body.theme-…`, the hook for a page's own tokens and bar colours */
+  theme?: keyof typeof themeColors;
 }
+
+const themeColors = { fir: '#0e3b2e', navy: '#0b2348', mono: '#070708' } as const;
 
 const {
   title,
   description = 'A motion study for the Lawyer Near By homepage.',
   current,
   ground,
+  theme = 'fir',
 } = Astro.props;
 
 const variations = [
-  { slug: 'reveal', label: '01 · Reveal' },
-  { slug: 'spotlight', label: '02 · Spotlight' },
-  { slug: 'kinetic', label: '03 · Kinetic' },
+  { slug: 'reveal', n: '01', label: 'Reveal' },
+  { slug: 'spotlight', n: '02', label: 'Spotlight' },
+  { slug: 'chambers', n: '03', label: 'Chambers' },
 ] as const;
 ---
 
@@ -35,7 +41,7 @@ const variations = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#0e3b2e" />
+    <meta name="theme-color" content={themeColors[theme]} />
     <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -43,6 +49,8 @@ const variations = [
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
     />
+
+    <slot name="head" />
 
     <script is:inline>
       // Set before first paint so animated elements never flash in visible,
@@ -53,7 +61,7 @@ const variations = [
     </script>
   </head>
 
-  <body style={ground ? `background:${ground}` : undefined}>
+  <body class={`theme-${theme}`} style={ground ? `background:${ground}` : undefined}>
     <a href="#main" class="skip">Skip to content</a>
 
     <nav class="bar" aria-label="Variations">
@@ -70,7 +78,7 @@ const variations = [
                   href={url(`/variations/${v.slug}/`)}
                   aria-current={v.slug === current ? 'page' : undefined}
                 >
-                  {v.label}
+                  <span class="bar__n">{v.n} · </span>{v.label}
                 </a>
               </li>
             ))
@@ -82,6 +90,8 @@ const variations = [
     <main id="main">
       <slot />
     </main>
+
+    <SmoothScroll />
 
     <script>
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -172,9 +182,9 @@ const variations = [
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(9, 39, 30, 0.88);
+    background: var(--bar-bg, rgba(9, 39, 30, 0.88));
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(236, 229, 215, 0.14);
+    border-bottom: 1px solid var(--bar-line, rgba(236, 229, 215, 0.14));
   }
 
   .bar__in {
@@ -194,11 +204,11 @@ const variations = [
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(236, 229, 215, 0.7);
+    color: var(--bar-ink, rgba(236, 229, 215, 0.7));
   }
 
   .bar__home:hover {
-    color: var(--c-lime);
+    color: var(--bar-on, var(--c-lime));
   }
 
   .bar__list {
@@ -215,7 +225,7 @@ const variations = [
     font-family: var(--font-display);
     font-size: var(--fs-small);
     font-weight: 600;
-    color: rgba(236, 229, 215, 0.7);
+    color: var(--bar-ink, rgba(236, 229, 215, 0.7));
     transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
   }
 
@@ -225,7 +235,23 @@ const variations = [
   }
 
   .bar__link.is-on {
-    background: var(--c-lime);
+    background: var(--bar-on, var(--c-lime));
     color: var(--c-fir-deep);
+  }
+
+  /* the links only fit one row on a phone without their numbers */
+  @media (max-width: 619px) {
+    .bar__n {
+      display: none;
+    }
+
+    .bar__list {
+      gap: 0.1rem;
+    }
+
+    .bar__link {
+      padding-inline: 0.5rem;
+      font-size: 0.8125rem;
+    }
   }
 </style>

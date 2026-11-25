@@ -8,7 +8,7 @@ Static output, no runtime framework, no backend.
 | Command           | Does                                  |
 | ----------------- | ------------------------------------- |
 | `npm install`     | Install dependencies                  |
-| `npm run dev`     | Dev server at `http://localhost:4321` |
+| `npm run dev`     | Dev server at `http://localhost:4400` |
 | `npm run build`   | Static build into `dist/`             |
 | `npm run preview` | Serve the built output locally        |
 
@@ -32,6 +32,7 @@ src/
     Faq.astro             native <details> accordion
     Contact.astro         #contact — where "Explore Consultation" lands
     Footer.astro
+    SmoothScroll.astro    eased wheel scrolling + gliding in-page links
   pages/index.astro       assembles the homepage
 public/images/            photography and cut-out artwork
 ```
@@ -78,6 +79,8 @@ were keyed out, so they are now PNGs with real alpha and can sit on any colour.
 | -------------------- | -------------------------- |
 | `advocate.jpg`       | hero photo card            |
 | `consultation.jpg`   | About section              |
+| `chambers.jpg`       | `/variations/chambers`     |
+| `justice-mono.webp`  | `/variations/reveal`, made from `justice-bronze.png` (mirrored, black and white, cut-out repaired) |
 | `justice-bronze.png` | unused — alternate artwork |
 | `justice-stone.png`  | unused — alternate artwork |
 | `justice-steel.png`  | unused — alternate artwork |
@@ -96,17 +99,36 @@ indexed at `/variations/`. They share `src/styles/motion.css` and
 | ------------------------ | ----------------------------------------------------------------- |
 | `/variations/reveal`     | Masked headline, staggered scroll reveals, parallax figure, ticker |
 | `/variations/spotlight`  | Cursor-lit dark hero, counters, cards and buttons that lean        |
-| `/variations/kinetic`    | Cycling headline word, sticky route rail, dragged practice strip   |
+| `/variations/chambers`   | Masked headline, scroll reveals, a 30 minute ruler that fills      |
 
 Rules the motion layer keeps to:
 
 - Nothing is required to read the page. With JavaScript off every animated
   element renders visible; `has-motion` is only added by an inline head script.
-- `prefers-reduced-motion: reduce` disables every transition, the marquee, the
-  float and the headline cycling, and counters jump to their final value.
+- `prefers-reduced-motion: reduce` disables every transition, the marquee and the
+  float, and counters jump to their final value.
 - Items inside a horizontal scroller are never revealed on viewport
   intersection — they would never intersect, and would stay invisible.
 - The statue artwork is used here at full size, which is what it needed.
+
+Two variations have their own palette. Each passes `theme` to `VariationLayout`
+and sets its tokens on `body.theme-…` inside the page, so the switcher bar
+follows and no other page changes:
+
+- `reveal` (`theme="mono"`): a black and silver hero, navy and blue below it,
+  set in Inter.
+  It still uses the shared Services, Consultation, Process, Testimonials,
+  Contact and Footer sections, recoloured by redefining their tokens.
+- `chambers` (`theme="navy"`): navy, white and pale blue, square corners,
+  Poppins and Manrope.
+
+## Smooth scrolling
+
+`src/components/SmoothScroll.astro` runs on every page through the two layouts.
+It uses [Lenis](https://github.com/darkroomengineering/lenis), pinned in
+`package.json`. Touch screens keep native momentum, `prefers-reduced-motion`
+turns it off, and without JavaScript the page scrolls normally. `lerp` sets how
+long the page glides: lower is longer.
 
 ## Deploying
 
@@ -140,8 +162,8 @@ PUBLIC_BASE_PATH=/Lawyer-near-by npm run build
 
 ## Before launch
 
-- **The advocate photo** in the hero is presented as a member of the firm. If it
-  is stock or generated imagery rather than a real advocate, replace it —
+- **The advocate photos** (`advocate.jpg`, `chambers.jpg`) are presented as members of the firm.
+  If either is stock or generated imagery rather than a real advocate, replace it —
   showing it as your team would mislead clients.
 - **Content in `src/data/site.ts`** — phone, email, address, Bar Council
   registration number, testimonials and the case list — is sample copy.

@@ -1,0 +1,61 @@
+---
+/**
+ * Eased wheel scrolling and gliding in-page links, for every page.
+ *
+ * Touch screens keep their native momentum, and nothing runs when the viewer
+ * asks for reduced motion. Without JavaScript the page scrolls normally and
+ * links still glide, through `scroll-behavior` in global.css.
+ */
+---
+
+<script>
+  import Lenis from 'lenis';
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const lenis = new Lenis({ autoRaf: true, lerp: 0.09 });
+
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 4);
+
+    // Lenis leaves the browser's own jump in place on link clicks, which shows
+    // as a flash before the glide, so in-page links are handled here.
+    document.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+      // the skip link is for getting somewhere at once
+      if (!link || link.classList.contains('skip')) return;
+
+      const hash = link.getAttribute('href') as string;
+      const id = decodeURIComponent(hash.slice(1));
+      // `#top` means the very top, even where its element sits below a header
+      const toTop = id === '' || id === 'top';
+      const target = toTop ? null : document.getElementById(id);
+      if (!target && !toTop) return;
+
+      event.preventDefault();
+      if (hash !== location.hash) history.pushState(null, '', hash);
+
+      lenis.scrollTo(target ?? 0, { duration: 1.1, easing: easeOut });
+
+      // keyboard and screen reader users carry on from the section, as they
+      // would after a normal jump
+      if (target) {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+    });
+  }
+</script>
+
+<style is:global>
+  /* two smooth scrollers would fight each other */
+  html.lenis {
+    height: auto;
+    scroll-behavior: auto;
+  }
+
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+</style>

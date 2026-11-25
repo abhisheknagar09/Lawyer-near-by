@@ -7,16 +7,21 @@ import Process from '../../components/Process.astro';
 import Testimonials from '../../components/Testimonials.astro';
 import Contact from '../../components/Contact.astro';
 import Footer from '../../components/Footer.astro';
-import { services } from '../../data/site';
+import { services, site, testimonials } from '../../data/site';
 import { url } from '../../lib/url';
 
-const headline = ['Legal help that', 'starts with a', 'real conversation.'];
+const headline = ['Justice should be', 'within reach,', 'for everyone.'];
+
+const links = [
+  { label: 'Services', href: '#services' },
+  { label: 'Consultation', href: '#consultation' },
+  { label: 'Process', href: '#process' },
+  { label: 'Contact', href: '#contact' },
+] as const;
 
 const counters = [
-  { to: 12, suffix: '+', label: 'Years in practice' },
-  { to: 2400, suffix: '+', label: 'Matters handled' },
   { to: 95, suffix: '%', label: 'Favourable outcomes' },
-  { to: 6, suffix: '', label: 'Languages spoken' },
+  { to: 12, suffix: '+', label: 'Years in practice' },
 ];
 
 const ticker = [...services, ...services];
@@ -24,80 +29,92 @@ const ticker = [...services, ...services];
 
 <VariationLayout
   title="Reveal — Lawyer Near By"
-  description="Scroll-choreographed motion study: masked headline, floating figure, staggered reveals."
+  description="Black and silver study: a spotlit figure of Justice, masked headline and staggered reveals."
   current="reveal"
+  theme="mono"
 >
   <!-- ══ hero ══════════════════════════════════════════════ -->
-  <section class="hero">
-    <div class="shell hero__grid">
-      <div class="hero__copy">
-        <span class="eyebrow" data-reveal="up">
-          <Icon name="sparkle" size={13} />
-          Consultations from ₹50
-        </span>
+  <section class="stage" id="top">
+    <div class="frame">
+      <header class="top">
+        <a class="brand" href="#top" aria-label={`${site.name}, back to top`}>
+          <Icon name="scale" size={26} stroke={1.4} />
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <ul>
+            {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </nav>
+        <a class="out" href="#contact">
+          Book consultation
+          <Icon name="arrow-up-right" size={17} />
+        </a>
+      </header>
 
-        <h1 class="hero__title lines">
+      <div class="copy">
+        <h1 class="title lines">
           {
             headline.map((line, i) => (
-              <span class="line" style={`--d:${120 + i * 110}ms`}>
-                <span>
-                  {i === 2 ? <em class="hero__accent">{line}</em> : line}
-                </span>
+              <span class="line" style={`--d:${200 + i * 120}ms`}>
+                <span>{line}</span>
               </span>
             ))
           }
         </h1>
-
-        <p class="lede hero__lede" data-reveal="up" style="--d:520ms">
-          Talk to a practising advocate about your matter — in your language, by audio or video,
-          before you commit to anything.
-        </p>
-
-        <div class="hero__actions" data-reveal="up" style="--d:620ms">
-          <a class="btn btn--lime" href="#consultation">
+        <div data-reveal="up" style="--d:640ms">
+          <a class="solid" href="#consultation">
             Explore consultation
-            <span class="btn__arrow" aria-hidden="true">
-              <Icon name="arrow-up-right" size={13} />
-            </span>
-          </a>
-          <a class="btn btn--fir" href="#services">
-            Browse practice areas
-            <span class="btn__arrow" aria-hidden="true">
-              <Icon name="arrow-up-right" size={13} />
-            </span>
+            <Icon name="arrow-up-right" size={17} />
           </a>
         </div>
       </div>
 
-      <figure class="figure" data-reveal="scale" style="--d:300ms">
-        <span class="figure__disc" aria-hidden="true"></span>
-        <svg class="figure__ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-          <circle cx="50" cy="50" r="49.6" />
-        </svg>
+      <ul class="stats">
+        {
+          counters.map((c, i) => (
+            <li data-reveal="up" style={`--d:${300 + i * 100}ms`}>
+              <strong class="tally" data-tally={c.to} data-suffix={c.suffix} set:text={`${c.to}${c.suffix}`} />
+              <span>{c.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="note" data-reveal="right" style="--d:420ms">
+        Talk to a practising advocate about your matter, in your language, by audio or video, before
+        you commit to anything.
+      </p>
+
+      <figure class="figure" data-reveal="scale" style="--d:80ms">
         <img
-          class="figure__img floats"
-          src={url("/images/justice-bronze.png")}
-          alt="Bronze figure of Justice holding scales and a sword"
+          src={url('/images/justice-mono.webp')}
+          alt="Steel figure of Justice, blindfolded, holding scales in one hand and a sword in the other"
           width="843"
           height="1100"
           fetchpriority="high"
           data-parallax
         />
       </figure>
-    </div>
 
-    <ul class="shell counters">
-      {
-        counters.map((c, i) => (
-          <li class="counter" data-reveal="up" style={`--d:${i * 90}ms`}>
-            <strong class="counter__value tally" data-tally={c.to} data-suffix={c.suffix}>
-              0{c.suffix}
-            </strong>
-            <span class="counter__label">{c.label}</span>
-          </li>
-        ))
-      }
-    </ul>
+      <aside class="card" data-reveal="up" style="--d:540ms" aria-label="Track record">
+        <div class="card__side">
+          <ul class="faces" aria-hidden="true">
+            {testimonials.map((t) => <li>{t.name.charAt(0)}</li>)}
+          </ul>
+          <p class="card__fig">
+            <strong class="tally" data-tally="2400" data-suffix="+">2,400+</strong>
+            <span>Matters handled</span>
+          </p>
+        </div>
+        <img
+          class="card__img"
+          src={url('/images/advocate.jpg')}
+          alt="Advocate in a law library"
+          width="1000"
+          height="1000"
+        />
+      </aside>
+    </div>
   </section>
 
   <!-- ══ ticker ════════════════════════════════════════════ -->
@@ -107,7 +124,7 @@ const ticker = [...services, ...services];
         {
           ticker.map((s) => (
             <span class="ticker__item">
-              <Icon name={s.icon as any} size={17} />
+              <Icon name={s.icon} size={17} />
               {s.title}
             </span>
           ))
@@ -117,7 +134,7 @@ const ticker = [...services, ...services];
         {
           ticker.map((s) => (
             <span class="ticker__item">
-              <Icon name={s.icon as any} size={17} />
+              <Icon name={s.icon} size={17} />
               {s.title}
             </span>
           ))
@@ -126,13 +143,15 @@ const ticker = [...services, ...services];
     </div>
   </section>
 
-  <!-- ══ reused sections, revealed on scroll ═══════════════ -->
-  <div data-reveal="up"><Services /></div>
-  <div data-reveal="up"><Consultation /></div>
-  <div data-reveal="up"><Process /></div>
-  <div data-reveal="up"><Testimonials /></div>
-  <div data-reveal="up"><Contact /></div>
-  <Footer />
+  <!-- ══ shared sections, recoloured by the tokens below ═══ -->
+  <div class="mono">
+    <div data-reveal="up"><Services /></div>
+    <div data-reveal="up"><Consultation /></div>
+    <div data-reveal="up"><Process /></div>
+    <div data-reveal="up"><Testimonials /></div>
+    <div data-reveal="up"><Contact /></div>
+    <Footer />
+  </div>
 </VariationLayout>
 
 <script>
@@ -144,11 +163,9 @@ const ticker = [...services, ...services];
     let ticking = false;
 
     const update = () => {
-      const r = el.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < window.innerHeight) {
-        const progress = (window.innerHeight - r.top) / (window.innerHeight + r.height);
-        el.style.setProperty('--shift', `${(progress - 0.5) * -46}px`);
-      }
+      // Only ever drifts down, so the plinth never lifts off the frame's edge.
+      const y = Math.min(window.scrollY, window.innerHeight);
+      el.style.setProperty('--shift', `${(y * 0.06).toFixed(1)}px`);
       ticking = false;
     };
 
@@ -160,134 +177,620 @@ const ticker = [...services, ...services];
 
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
   }
 </script>
 
-<style>
-  .hero {
-    padding-block: clamp(2rem, 1.2rem + 3vw, 4rem) clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem);
+<!-- For this page only: a black and silver hero, then navy and blue below it.
+     The shared sections read the same token names as the green site, so
+     redefining those on `.mono` recolours them and leaves the hero alone. -->
+<style is:global>
+  body.theme-mono {
+    --c-page: #ffffff;
+    --c-card: #ffffff;
+    --c-sand: #f0f0f1;
+    --c-sand-deep: #dcdcde;
+    --c-fir: #121213;
+    --c-fir-deep: #070708;
+    --c-fir-lift: #29292b;
+    --c-hairline: rgba(18, 18, 19, 0.13);
+    --c-hairline-dark: rgba(255, 255, 255, 0.18);
+    --c-ink: #121213;
+    --c-ink-soft: #55555a;
+    --c-ink-faint: #6f6f75;
+    --c-on-fir: #ffffff;
+    --c-on-fir-soft: rgba(255, 255, 255, 0.76);
+    --c-on-fir-faint: rgba(255, 255, 255, 0.6);
+    --c-lime: #ececee;
+    --c-lime-deep: #cfcfd3;
+    --c-lime-wash: rgba(255, 255, 255, 0.14);
+    --shadow-card: 0 22px 44px -28px rgba(0, 0, 0, 0.5);
+    --shadow-lift: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+
+    /* Inter throughout; VariationLayout loads it in 400, 500, 600 and 700 */
+    --font-head: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-display: var(--font-head);
+    --font-body: var(--font-head);
+
+    --bar-bg: #070708;
+    --bar-line: rgba(255, 255, 255, 0.14);
+    --bar-ink: #c4c4c9;
+    --bar-on: #ffffff;
   }
 
-  .hero__grid {
-    display: grid;
-    gap: clamp(2rem, 1.2rem + 3vw, 3.5rem);
-    align-items: center;
+  /* Everything under the hero: one family of blues, and the hero's own buttons.
+     The rules below undo the shared sections' card-and-chip styling so the page
+     reads as plain type, rules and two navy panels. */
+  body.theme-mono .mono,
+  body.theme-mono .ticker {
+    --c-sand: #edf2fa;
+    --c-sand-deep: #d6e0f0;
+    --c-fir: #12264f;
+    --c-fir-deep: #0a1731;
+    --c-fir-lift: #1d3870;
+    --c-hairline: rgba(18, 38, 79, 0.18);
+    --c-hairline-dark: rgba(214, 226, 248, 0.22);
+    --c-ink: #0e1626;
+    --c-ink-soft: #4a5569;
+    --c-ink-faint: #5d6980;
+    --c-on-fir: #f5f8ff;
+    --c-on-fir-soft: rgba(230, 238, 252, 0.84);
+    --c-on-fir-faint: rgba(224, 233, 250, 0.72);
+    --c-lime: #b9d2f7;
+    --c-lime-deep: #95b8ea;
+    --c-lime-wash: rgba(150, 185, 245, 0.2);
+    --blue: #1f4fa8;
+    --r-panel: 20px;
+    --r-card: 12px;
+    --shadow-card: none;
+    --shadow-lift: none;
   }
 
-  .hero__title {
-    margin-top: 1.2rem;
-    font-size: var(--fs-display);
-    letter-spacing: -0.042em;
+  body.theme-mono .mono {
+    color: var(--c-ink);
   }
 
-  .hero__accent {
-    font-style: normal;
+  /* the closing panel goes a shade deeper than the steps above it */
+  body.theme-mono .mono #contact {
+    --c-fir: #0b1a3a;
+  }
+
+  body.theme-mono #main .mono .panel :focus-visible,
+  body.theme-mono #main .mono .tile--lead :focus-visible {
+    outline-color: var(--c-lime);
+  }
+
+  /* --- type --- */
+  body.theme-mono #main .mono h2 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+
+  body.theme-mono #main .mono h3:not(.ft__h) {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+  }
+
+  body.theme-mono #main .mono .accent,
+  body.theme-mono #main .mono h2 .lime {
+    color: inherit;
+  }
+
+  body.theme-mono #main .mono .eyebrow,
+  body.theme-mono #main .mono .card__label,
+  body.theme-mono #main .mono .recap__label,
+  body.theme-mono #main .mono .price__unit,
+  body.theme-mono #main .mono .ft__h {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  body.theme-mono #main .mono .eyebrow {
+    color: var(--blue);
+  }
+
+  body.theme-mono #main .mono .eyebrow--on-fir {
+    color: var(--c-lime);
+  }
+
+  body.theme-mono #main .mono .eyebrow svg {
+    display: none;
+  }
+
+  body.theme-mono #main .mono .card__label,
+  body.theme-mono #main .mono .ft__h {
+    font-weight: 600;
+    color: var(--c-ink);
+  }
+
+  body.theme-mono #main .mono .ft__reg {
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  body.theme-mono #main .mono .tile__link,
+  body.theme-mono #main .mono .recap__link {
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  /* --- buttons, as in the hero --- */
+  body.theme-mono #main .mono .btn {
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.7rem 1.25rem;
+    border-radius: 6px;
+    box-shadow: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  body.theme-mono #main .mono .btn:hover {
+    transform: none;
+  }
+
+  body.theme-mono #main .mono .btn__arrow {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
+  }
+
+  body.theme-mono #main .mono .btn:hover .btn__arrow {
+    transform: translate(2px, -2px);
+  }
+
+  body.theme-mono #main .mono .btn--lime {
+    background: #ffffff;
+    color: var(--c-fir-deep);
+  }
+
+  body.theme-mono #main .mono .btn--lime:hover {
+    background: var(--c-lime);
+  }
+
+  body.theme-mono #main .mono .btn--ghost {
+    border-color: rgba(255, 255, 255, 0.55);
+  }
+
+  body.theme-mono #main .mono .btn--ghost:hover {
+    background: #ffffff;
+    color: var(--c-fir-deep);
+  }
+
+  body.theme-mono #main .mono #consultation .btn--lime {
+    background: var(--c-fir);
+    color: #ffffff;
+  }
+
+  body.theme-mono #main .mono #consultation .btn--lime:hover {
+    background: var(--blue);
+  }
+
+  /* --- practice areas: one filled block, the rest open under a rule --- */
+  body.theme-mono #main .mono .bento {
+    gap: 1.75rem clamp(1.5rem, 1rem + 1.8vw, 2.5rem);
+  }
+
+  body.theme-mono #main .mono .tile,
+  body.theme-mono #main .mono .tile:hover {
+    transform: none;
+  }
+
+  body.theme-mono #main .mono .tile:not(.tile--lead) {
+    padding: 1.5rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--c-hairline);
+    border-radius: 0;
+    background: none;
+  }
+
+  body.theme-mono #main .mono .tile__icon {
+    justify-items: start;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
+    color: var(--blue);
+  }
+
+  body.theme-mono #main .mono .tile--lead .tile__icon {
+    color: var(--c-lime);
+  }
+
+  body.theme-mono #main .mono .tile__body {
+    font-size: 0.9375rem;
+  }
+
+  /* --- consultation --- */
+  body.theme-mono #main .mono .price__figure,
+  body.theme-mono #main .mono .price__minutes,
+  body.theme-mono #main .mono .recap__fee {
+    font-weight: 600;
+  }
+
+  body.theme-mono #main .mono .price__rule {
+    background: var(--c-hairline);
+  }
+
+  body.theme-mono #main .mono .card__icon {
+    justify-items: start;
+    width: 1.5rem;
+    height: auto;
+    border-radius: 0;
+    background: none;
+    color: var(--blue);
+  }
+
+  body.theme-mono #main .mono .card__item {
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  /* --- steps: figures on a line --- */
+  body.theme-mono #main .mono .step__rail {
+    margin-bottom: 0.9rem;
+  }
+
+  body.theme-mono #main .mono .step__num {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--c-lime);
+  }
+
+  body.theme-mono #main .mono .step__rail::after {
+    margin-right: -0.4rem;
+    background: var(--c-hairline-dark);
+  }
+
+  /* --- clients: words and a name --- */
+  body.theme-mono #main .mono .quotes__list {
+    gap: 2rem clamp(1.5rem, 1rem + 1.8vw, 2.5rem);
+  }
+
+  body.theme-mono #main .mono .quote,
+  body.theme-mono #main .mono .quote:hover {
+    padding: 1.5rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--c-hairline);
+    border-radius: 0;
+    background: none;
+    transform: none;
+  }
+
+  body.theme-mono #main .mono .quote__stars,
+  body.theme-mono #main .mono .quote__avatar {
+    display: none;
+  }
+
+  body.theme-mono #main .mono .quote__text {
+    margin: 0 0 1.5rem;
+  }
+
+  body.theme-mono #main .mono .quote__by {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  body.theme-mono #main .mono .quote__name {
+    font-weight: 600;
+  }
+
+  body.theme-mono #main .mono .quote__role {
+    font-size: 0.875rem;
+  }
+
+  /* --- closing panel --- */
+  body.theme-mono #main .mono .recap {
+    padding: 1.75rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--c-hairline-dark);
+    border-radius: 0;
+    background: none;
+  }
+
+  body.theme-mono #main .mono .recap__price {
+    color: #ffffff;
+  }
+
+  @media (min-width: 900px) {
+    body.theme-mono #main .mono .recap {
+      padding: 0 0 0 2rem;
+      border-top: 0;
+      border-left: 1px solid var(--c-hairline-dark);
+    }
+  }
+
+  /* --- footer --- */
+  body.theme-mono #main .mono .ft__mark {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
     color: var(--c-fir);
-    background: linear-gradient(180deg, transparent 62%, var(--c-lime-wash) 62%);
   }
 
-  .hero__lede {
-    margin-top: 1.15rem;
-    max-width: 40ch;
+  body.theme-mono #main .mono .ft__logo {
+    font-weight: 600;
   }
 
-  .hero__actions {
+  body.theme-mono .stage :focus-visible,
+  body.theme-mono .bar :focus-visible {
+    outline-color: #ffffff;
+  }
+</style>
+
+<style>
+  .stage {
+    padding: clamp(0.6rem, 0.3rem + 1vw, 1rem);
+    background: #ffffff;
+  }
+
+  .frame {
+    --pad: clamp(1.15rem, 0.4rem + 2.6vw, 3rem);
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    max-width: 1560px;
+    margin-inline: auto;
+    padding: var(--pad);
+    border-radius: 20px;
+    overflow: hidden;
+    color: #ffffff;
+    background: #0a0a0b;
+  }
+
+  /* --- header --- */
+  .top {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem clamp(1.5rem, 0.5rem + 3vw, 3.5rem);
+  }
+
+  .brand {
+    flex: none;
+    line-height: 0;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: clamp(1.1rem, 0.4rem + 1.4vw, 2rem);
+    margin: 0;
+  }
+
+  .nav a {
+    padding-block: 0.4rem;
+    font-size: 0.9375rem;
+    background: linear-gradient(#ffffff, #ffffff) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.25s var(--ease);
+  }
+
+  .nav a:hover {
+    background-size: 100% 1px;
+  }
+
+  .out,
+  .solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.6rem 1.25rem;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .out {
+    margin-left: auto;
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .out:hover {
+    background: #ffffff;
+    color: #121213;
+  }
+
+  .solid {
+    background: #ffffff;
+    color: #121213;
+  }
+
+  .solid:hover {
+    background: #121213;
+    color: #ffffff;
+  }
+
+  .out :global(svg),
+  .solid :global(svg) {
+    flex: none;
+    transition: translate 0.25s var(--ease);
+  }
+
+  .out:hover :global(svg),
+  .solid:hover :global(svg) {
+    translate: 2px -2px;
+  }
+
+  /* --- copy --- */
+  .copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 1.6rem;
+    justify-items: start;
+    padding-top: 1rem;
+  }
+
+  .title {
+    font-family: var(--font-head);
+    font-size: clamp(2.1rem, 1.4rem + 2.5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: -0.04em;
+  }
+
+  /* room for descenders inside the masked lines */
+  .title .line {
+    padding-bottom: 0.14em;
+    margin-bottom: -0.1em;
+    white-space: nowrap;
+  }
+
+  .stats {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.7rem;
-    margin-top: 1.9rem;
+    gap: 1.25rem clamp(1.15rem, 0.3rem + 3.8vw, 4rem);
+    margin: 0;
   }
 
-  /* --- the figure --- */
+  .stats strong {
+    display: block;
+    font-size: clamp(2rem, 1.6rem + 1.2vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .stats span {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .note {
+    position: relative;
+    z-index: 2;
+    max-width: 36ch;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  /* --- the figure, in its pool of light --- */
   .figure {
     position: relative;
-    display: grid;
-    place-items: end center;
-    margin: 0;
-    min-height: clamp(320px, 46vw, 520px);
+    z-index: 1;
+    height: clamp(400px, 116vw, 640px);
+    margin: -0.5rem calc(var(--pad) * -1) 0;
+    background: radial-gradient(
+      ellipse 56% 47% at 50% 47%,
+      #dcdcdf 0%,
+      #a3a3a7 30%,
+      #555558 62%,
+      rgba(10, 10, 11, 0) 100%
+    );
   }
 
-  .figure__disc,
-  .figure__ring {
+  .figure img {
     position: absolute;
-    border-radius: 50%;
-  }
-
-  .figure__disc {
-    left: 50%;
-    bottom: 6%;
-    translate: -50% 0;
-    width: min(88%, 380px);
-    aspect-ratio: 1;
-    background: radial-gradient(circle at 50% 42%, var(--c-sand), var(--c-sand-deep) 72%);
-  }
-
-  /* The dashes travel by animating stroke-dashoffset rather than rotating a
-     square box, whose bounding box would grow past the viewport on a phone. */
-  .figure__ring {
-    left: 50%;
-    bottom: 2%;
-    translate: -50% 0;
-    width: min(100%, 430px);
-    height: auto;
-    aspect-ratio: 1;
-    overflow: visible;
-  }
-
-  .figure__ring circle {
-    fill: none;
-    stroke: rgba(14, 59, 46, 0.24);
-    stroke-width: 0.3;
-    stroke-dasharray: 1.6 2.6;
-    animation: ring-travel 44s linear infinite;
-  }
-
-  @keyframes ring-travel {
-    to {
-      stroke-dashoffset: -84;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .figure__ring circle {
-      animation: none;
-    }
-  }
-
-  .figure__img {
-    position: relative;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: auto;
-    max-width: 100%;
-    height: clamp(300px, 42vw, 480px);
-    object-fit: contain;
-    translate: 0 var(--shift, 0px);
-    filter: drop-shadow(0 26px 34px rgba(14, 59, 46, 0.3));
+    max-width: none;
+    height: 100%;
+    margin-inline: auto;
+    translate: 1% var(--shift, 0px);
   }
 
-  /* --- counters --- */
-  .counters {
+  /* --- track record card --- */
+  .card {
+    position: relative;
+    z-index: 2;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem 1.25rem;
-    margin-top: clamp(2rem, 1.4rem + 2.4vw, 3rem);
-    padding-top: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
-    border-top: 1px solid var(--c-hairline);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1rem;
+    margin-top: calc(-1 * clamp(4rem, 16vw, 7rem));
+    padding: 1.1rem;
+    border-radius: 18px;
+    background: #ffffff;
+    color: #121213;
   }
 
-  .counter__value {
+  .card__side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .faces {
+    display: flex;
+    margin: 0;
+  }
+
+  .faces li {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    background: #121213;
+    color: #ffffff;
+  }
+
+  .faces li + li {
+    margin-left: -0.7rem;
+  }
+
+  .faces li:nth-child(2) {
+    background: #55555a;
+  }
+
+  .faces li:nth-child(3) {
+    background: #d4d4d8;
+    color: #121213;
+  }
+
+  .card__fig strong {
     display: block;
-    font-family: var(--font-display);
-    font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.6rem);
-    font-weight: 800;
-    letter-spacing: -0.045em;
-    line-height: 1.1;
-    color: var(--c-fir);
+    font-size: clamp(1.9rem, 1.5rem + 1vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    font-variant-numeric: lining-nums tabular-nums;
   }
 
-  .counter__label {
-    font-size: var(--fs-small);
-    color: var(--c-ink-soft);
+  .card__fig span {
+    font-size: 0.9375rem;
+    color: #55555a;
+  }
+
+  .card__img {
+    width: 100%;
+    height: 100%;
+    min-height: 11rem;
+    max-height: 15rem;
+    object-fit: cover;
+    object-position: 50% 20%;
+    border-radius: 12px;
   }
 
   /* --- ticker --- */
@@ -302,7 +805,6 @@ const ticker = [...services, ...services];
     align-items: center;
     gap: 0.6rem;
     flex: none;
-    font-family: var(--font-display);
     font-size: var(--fs-small);
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -313,15 +815,143 @@ const ticker = [...services, ...services];
     color: var(--c-lime);
   }
 
-  @media (min-width: 620px) {
-    .counters {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+  @media (min-width: 700px) {
+    .nav {
+      display: block;
     }
   }
 
-  @media (min-width: 900px) {
-    .hero__grid {
-      grid-template-columns: 1.08fr 0.92fr;
+  @media (min-width: 760px) and (max-width: 1099px) {
+    .copy {
+      max-width: 30rem;
+    }
+
+    .stats,
+    .card {
+      max-width: 24rem;
+    }
+
+    .stats {
+      column-gap: 1.5rem;
+    }
+
+    .note {
+      max-width: 16rem;
+    }
+
+    .card {
+      margin-top: 0.5rem;
+    }
+
+    .figure {
+      position: absolute;
+      inset: 3.5rem 0 0 auto;
+      width: 68%;
+      height: auto;
+      margin: 0;
+      background: radial-gradient(
+        ellipse 56% 50% at 58% 54%,
+        #e2e2e4 0%,
+        #a3a3a7 30%,
+        #4f4f52 64%,
+        rgba(10, 10, 11, 0) 100%
+      );
+    }
+
+    .figure img {
+      left: auto;
+      bottom: -2%;
+      height: min(100%, 43rem);
+      margin: 0;
+      translate: -2% var(--shift, 0px);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .frame {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        'top top'
+        'stats note'
+        'copy card';
+      gap: 0;
+      height: clamp(620px, 56vw, 840px);
+      /* a lit backdrop wall, with the floor line near the bottom */
+      background:
+        linear-gradient(
+          180deg,
+          transparent 85.5%,
+          rgba(0, 0, 0, 0.42) 88.5%,
+          rgba(0, 0, 0, 0.1) 100%
+        ),
+        radial-gradient(
+          ellipse 46% 78% at 53% 47%,
+          #f1f1f3 0%,
+          #c3c3c6 26%,
+          #77777b 52%,
+          #2b2b2d 80%,
+          #0a0a0b 100%
+        );
+    }
+
+    .top {
+      grid-area: top;
+    }
+
+    .stats span {
+      font-size: 0.9375rem;
+    }
+
+    .stats {
+      grid-area: stats;
+      align-self: start;
+      padding-top: clamp(2rem, 4vw, 4.25rem);
+    }
+
+    .note {
+      grid-area: note;
+      justify-self: end;
+      align-self: center;
+      width: clamp(13rem, 21vw, 19rem);
+    }
+
+    .copy {
+      grid-area: copy;
+      align-self: end;
+      padding-top: 0;
+    }
+
+    /* sized to stop short of the sword */
+    .title {
+      font-size: clamp(2.3rem, 3.4vw, 3.5rem);
+    }
+
+    .card {
+      grid-area: card;
+      align-self: end;
+      justify-self: end;
+      width: clamp(17rem, 27vw, 25rem);
+      margin-top: 0;
+    }
+
+    .card__img {
+      min-height: 12rem;
+    }
+
+    .figure {
+      position: absolute;
+      inset: 0;
+      height: auto;
+      margin: 0;
+      background: none;
+      pointer-events: none;
+    }
+
+    .figure img {
+      bottom: -3.5%;
+      height: 102%;
+      translate: 4% var(--shift, 0px);
     }
   }
 </style>

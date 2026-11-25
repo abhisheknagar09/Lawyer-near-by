@@ -13,5 +13,9 @@ export default defineConfig({
   site,
   base,
   trailingSlash: 'ignore',
+  // Not Astro's default 4321: another Astro project running with `--host` can
+  // hold that port on IPv4 while this one takes it on IPv6, and `localhost` then
+  // sends that project's requests here ("No cached compile metadata found").
+  server: { port: 4400 },
   devToolbar: { enabled: false },
 });

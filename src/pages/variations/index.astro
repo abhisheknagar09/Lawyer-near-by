@@ -2,6 +2,7 @@
 import '../../styles/global.css';
 import '../../styles/motion.css';
 import Icon from '../../components/Icon.astro';
+import SmoothScroll from '../../components/SmoothScroll.astro';
 import { url } from '../../lib/url';
 
 const items = [
@@ -10,9 +11,9 @@ const items = [
     n: '01',
     name: 'Reveal',
     motion: 'Masked headline, staggered scroll reveals, parallax figure, looping ticker',
-    look: 'Open Counsel on cream, bronze figure on a sand disc',
-    img: '/images/justice-bronze.png',
-    alt: 'Bronze figure of Justice',
+    look: 'Steel figure in a black hero, then navy and white, set in Inter',
+    img: '/images/justice-mono.webp',
+    alt: 'Steel figure of Justice',
   },
   {
     slug: 'spotlight',
@@ -24,13 +25,14 @@ const items = [
     alt: 'Steel figure of Justice',
   },
   {
-    slug: 'kinetic',
+    slug: 'chambers',
     n: '03',
-    name: 'Kinetic',
-    motion: 'Cycling headline word, sticky route rail that lights the step you are on, dragged strip',
-    look: 'Oversized type on cream, carved figure on a sand band',
-    img: '/images/justice-stone.png',
-    alt: 'Carved figure of Justice',
+    name: 'Chambers',
+    motion: 'Masked headline, scroll reveals, a 30 minute ruler that fills tick by tick',
+    look: 'Navy, white and pale blue with square corners, portrait photo fading into the hero',
+    img: '/images/chambers.jpg',
+    alt: 'Advocate reading a brief at a desk',
+    photo: true,
   },
 ];
 ---
@@ -58,8 +60,9 @@ const items = [
         <a class="back" href={url("/")}><span aria-hidden="true">&larr;</span> Live homepage</a>
         <h1 class="head__title">Three motion studies</h1>
         <p class="lede head__lede">
-          The same homepage content and the same Open Counsel palette, with three different motion
-          languages. Everything still works with JavaScript off and with reduced motion on.
+          The same homepage content in three different motion languages. Spotlight keeps the Open
+          Counsel palette, Reveal pairs a black hero with navy and blue, and Chambers is navy and
+          white. Everything still works with JavaScript off and with reduced motion on.
         </p>
       </header>
 
@@ -68,7 +71,7 @@ const items = [
           items.map((item) => (
             <li class="item">
               <a class="item__link" href={url(`/variations/${item.slug}/`)}>
-                <div class="item__art" aria-hidden="true">
+                <div class:list={['item__art', { 'item__art--photo': item.photo }]} aria-hidden="true">
                   <img src={url(item.img)} alt="" width="300" height="400" loading="lazy" />
                 </div>
                 <div class="item__body">
@@ -93,6 +96,7 @@ const items = [
         no checkout, no booking calls.
       </p>
     </main>
+    <SmoothScroll />
   </body>
 </html>
 
@@ -135,6 +139,7 @@ const items = [
 
   .item__link {
     display: grid;
+    grid-template-rows: auto 1fr;
     height: 100%;
     border-radius: var(--r-card);
     background: var(--c-card);
@@ -159,6 +164,17 @@ const items = [
     width: auto;
     height: clamp(140px, 20vw, 190px);
     object-fit: contain;
+  }
+
+  .item__art--photo {
+    padding: 0;
+  }
+
+  .item__art--photo img {
+    width: 100%;
+    height: calc(clamp(140px, 20vw, 190px) + 3rem);
+    object-fit: cover;
+    object-position: 50% 30%;
   }
 
   .item__body {
