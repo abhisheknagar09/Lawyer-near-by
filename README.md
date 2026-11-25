@@ -108,6 +108,36 @@ Rules the motion layer keeps to:
   intersection — they would never intersect, and would stay invisible.
 - The statue artwork is used here at full size, which is what it needed.
 
+## Deploying
+
+`.github/workflows/deploy.yml` builds the site and publishes it to GitHub
+Pages on every push to `main`.
+
+**One setting is needed before the first run:** in the repository, go to
+Settings -> Pages and set **Source** to **GitHub Actions**. Without it the
+workflow builds and then fails at the deploy step.
+
+The site then serves from `https://<owner>.github.io/<repo>/`.
+
+Because a project site lives under a sub-path, `astro.config.mjs` reads two
+variables that the workflow supplies from `actions/configure-pages`:
+
+| Variable           | Local / Netlify / Vercel | GitHub Pages     |
+| ------------------ | ------------------------ | ---------------- |
+| `PUBLIC_SITE_URL`  | unset                    | the Pages origin |
+| `PUBLIC_BASE_PATH` | unset, so `/`            | `/<repo>`        |
+
+Astro does not rewrite hand-written absolute URLs, so **every internal link
+and asset path must go through `url()` from `src/lib/url.ts`** rather than
+starting with a plain `/`. With no base set it returns the path unchanged, so
+the same code works at a domain root and under a sub-path.
+
+To reproduce a Pages build locally:
+
+```sh
+PUBLIC_BASE_PATH=/Lawyer-near-by npm run build
+```
+
 ## Before launch
 
 - **The advocate photo** in the hero is presented as a member of the firm. If it

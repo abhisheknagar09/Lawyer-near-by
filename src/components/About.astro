@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { url } from '../lib/url';
 
 const pillars = [
   {
@@ -25,7 +26,7 @@ const pillars = [
     <div class="about__grid">
       <div class="about__shot">
         <img
-          src="/images/consultation.jpg"
+          src={url("/images/consultation.jpg")}
           alt="Two advocates in conversation in a courthouse corridor"
           width="1200"
           height="672"

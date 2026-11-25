@@ -2,6 +2,7 @@
 import VariationLayout from '../../layouts/VariationLayout.astro';
 import Icon from '../../components/Icon.astro';
 import { services, site, testimonials } from '../../data/site';
+import { url } from '../../lib/url';
 
 const features = [
   { icon: 'clock', label: 'Up to 30 minutes of consultation' },
@@ -62,7 +63,7 @@ const telHref = `tel:${site.phone.replace(/[^+\d]/g, '')}`;
           <span class="figure__glow" aria-hidden="true"></span>
           <img
             class="figure__img floats"
-            src="/images/justice-steel.png"
+            src={url("/images/justice-steel.png")}
             alt="Figure of Justice holding balanced scales"
             width="446"
             height="551"
@@ -167,7 +168,7 @@ const telHref = `tel:${site.phone.replace(/[^+\d]/g, '')}`;
     <section class="sec shell proof">
       <div class="proof__shot" data-reveal="left">
         <img
-          src="/images/advocate.jpg"
+          src={url("/images/advocate.jpg")}
           alt="An advocate from the Lawyer Near By team in the firm's law library"
           width="1000"
           height="1000"

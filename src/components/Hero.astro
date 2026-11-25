@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { heroStats } from '../data/site';
+import { url } from '../lib/url';
 ---
 
 <section class="hero" id="top">
@@ -38,7 +39,7 @@ import { heroStats } from '../data/site';
 
       <div class="shot">
         <img
-          src="/images/advocate.jpg"
+          src={url("/images/advocate.jpg")}
           alt="An advocate from the Lawyer Near By team in the firm's law library"
           width="1000"
           height="1000"

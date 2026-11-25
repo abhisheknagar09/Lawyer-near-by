@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { url } from '../lib/url';
 
 interface Props {
   title?: string;
@@ -22,7 +23,7 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0e3b2e" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
